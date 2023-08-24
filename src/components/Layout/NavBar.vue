@@ -18,9 +18,9 @@
             <div class="navbar-end">
             <div class="navbar-item">
                 <div class="buttons">
-                <a class="button is-light">
+                <RouterLink class="button is-light" to="/userPage">
                     <strong>Meu perfil</strong>
-                </a>
+                </RouterLink>
                 <a class="button is-light"
                     v-if="storeAuth.user.id"
                     @click="logout"

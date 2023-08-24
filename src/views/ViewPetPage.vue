@@ -4,13 +4,13 @@
         <figure class="image column">
             <img :src="petContent.img" alt="Pet image">
         </figure>
-        <div class="column">
-            <h1 class="title is-1">{{ petContent.name }}</h1>
-            <h1 class="title is-1">{{ petContent.sexo }}</h1>
-            <h1 class="title is-1">{{ petContent.especie }}</h1>
-            <h1 class="title is-1">{{ petContent.cidade }}</h1>
-            <h1 class="title is-1">{{ petContent.porte }}</h1>
-            <h1 class="title is-1">{{ petContent.descricao }}</h1>
+        <div class="column content is-medium">
+            <h1 >{{ petContent.name }}</h1>
+            <p >{{ petContent.sexo }}</p>
+            <p >{{ petContent.especie }}</p>
+            <p >{{ petContent.cidade }}</p>
+            <p > porte: {{ petContent.porte }}</p>
+            <p >{{ petContent.descricao }}</p>
 
         </div>
     </div>

@@ -71,7 +71,6 @@ export const useStorePets = defineStore('storePets',{
       getPetsSnapshot = onSnapshot(petCollectionQuery, (querySnapshot) => {
         let pets = []
         querySnapshot.forEach((doc) => {
-          console.log()
           let pet = {
             id: doc.id,
             name: doc.data().content.name,
@@ -79,9 +78,10 @@ export const useStorePets = defineStore('storePets',{
             especie: doc.data().content.especie,
             porte: doc.data().content.porte,
             cidade: doc.data().content.cidade,
-            img: 'src/assets/20200407_130345.jpg',
+            img: doc.data().content.img,
             descricao: doc.data().content.descricao,
           }
+
           pets.push(pet)
         })
         this.pets = pets

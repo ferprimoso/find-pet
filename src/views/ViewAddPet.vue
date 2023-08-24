@@ -55,6 +55,14 @@
   </div>
 
   <div class="field is-grouped">
+      <div v-if="previewUrl">
+        <img :src="previewUrl" alt="Preview" style="max-width: 300px; max-height: 300px;">
+      </div>
+
+      <input type="file" @change="handleFileChange" accept="image/*">
+  </div>
+
+  <div class="field is-grouped">
     <div class="control">
       <button class="button is-link">Submit</button>
     </div>
@@ -63,14 +71,6 @@
     </div>
   </div>
 
-  <div class="field is-grouped">
-      <div v-if="previewUrl">
-        <img :src="previewUrl" alt="Preview" style="max-width: 300px; max-height: 300px;">
-      </div>
-
-      
-      <input type="file" @change="handleFileChange" accept="image/*">
-  </div>
 </form>  
 
 </template>
@@ -80,7 +80,13 @@
 
 import { ref, reactive } from 'vue';
 import { useStorePets }from '@/stores/storePets'
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 
+/* storage image */
+
+const storage = getStorage();
+let storageReference = null;
+let file = null;
 
 /* form submit */
 
@@ -93,13 +99,32 @@ const petData = reactive({
     especie: 'cachorro',
     porte: 'pequeno',
     cidade: 'campinas',
-    img: 'src/assets/20200407_130345.jpg',
+    img: '',
     descricao: ''
   })
 
 const onSubmit = () => {
-  console.log(petData)
-  storePets.addPet(petData)
+  storageReference = storageRef(storage, `images/${file.name}`);
+
+  uploadBytes(storageReference, file).then((snapshot) => {
+    console.log(file);
+    console.log('Uploaded a blob or file!');
+  })
+  .then(
+    getDownloadURL(storageReference)
+    .then((url) => {
+      // `url` is the download URL for 'images/stars.jpg'
+      // Or inserted into an <img> element
+      petData.img = url
+      storePets.addPet(petData)
+    })
+    .catch((error) => {
+      // Handle any errors
+    }),
+
+    console.log(petData),
+  )
+  
 }
 
 /* file selected */
@@ -107,7 +132,7 @@ const onSubmit = () => {
 const previewUrl = ref(null)
 
 const handleFileChange = (event) => {
-  const file = event.target.files[0];
+  file = event.target.files[0];
   if (file) {
     previewImage(file);
   }
