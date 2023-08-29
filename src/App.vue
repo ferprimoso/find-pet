@@ -14,6 +14,8 @@ import { onMounted } from 'vue';
 import NavBar from '@/components/Layout/NavBar.vue'
 import { useStoreAuth } from '@/stores/storeAuth'
 
+
+
 /*
   store
 */
