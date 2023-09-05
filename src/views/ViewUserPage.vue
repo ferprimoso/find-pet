@@ -11,9 +11,6 @@
 
         <div class="column">
           <pre>{{  userDataContent  }}</pre>
-        
-        
-        
         </div>
 
 
@@ -28,7 +25,7 @@
 /*
 imports
 */
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStorePets }from '@/stores/storePets'
 import { useStoreUserdata } from '@/stores/storeUserdata'
@@ -39,7 +36,9 @@ import { useStoreUserdata } from '@/stores/storeUserdata'
 const storeUserdata = useStoreUserdata()
 const userDataContent = ref('')
 
-userDataContent.value = storeUserdata.getUserdataContent('id3')
+userDataContent.value = storeUserdata.getUserdataContent
+
+
 
 
 </script>

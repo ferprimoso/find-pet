@@ -21,8 +21,8 @@
 
     <div class="columns is-centered is-mobile mt-4">
         <vue-awesome-paginate
-            :total-items="50"
-            :items-per-page="3"
+            :total-items="storePets.pets.length"
+            :items-per-page="6"
             :max-pages-shown="5"
             v-model="currentPage"
             :on-click="onClickHandler"
@@ -38,7 +38,7 @@
 imports
 */
 
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import Pets from '@/components/Pets/Pets.vue';
 import SearchBar from '@/components/Layout/SearchBar.vue';
 import { useStorePets }from '@/stores/storePets'
@@ -60,6 +60,8 @@ const paginatedPets = computed(() => {
       const endIndex = startIndex + petsPerPage;
       return storePets.pets.slice(startIndex, endIndex);
     });
+
+/* onMonted */
 
 </script>
 

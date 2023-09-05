@@ -1,4 +1,5 @@
 import { useStorePets }from '@/stores/storePets'
+import { useStoreUserdata } from '@/stores/storeUserdata'
 import { defineStore } from 'pinia'
 import { doc, setDoc } from "firebase/firestore"; 
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth'
@@ -14,6 +15,8 @@ export const useStoreAuth = defineStore('storeAuth', {
   actions: {
     init() {
       const storePets = useStorePets()
+      const storeUserdata = useStoreUserdata()
+
 
       onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -21,6 +24,7 @@ export const useStoreAuth = defineStore('storeAuth', {
           this.user.email = user.email
           this.router.push('/')
           storePets.init()
+          storeUserdata.init()
         } else {
           this.user = {}
           this.router.replace('/auth')
@@ -29,14 +33,26 @@ export const useStoreAuth = defineStore('storeAuth', {
       })
     },
     registerUser(credentials) {
-      createUserWithEmailAndPassword(auth, credentials.email, credentials.password).then((userCredential) => {
+       createUserWithEmailAndPassword(auth, credentials.email, credentials.password).then((userCredential) => {
         const user = userCredential.user
-
-        
         // console.log('user: ', user)
+
+        console.log(credentials)
+        const storeUserdata = useStoreUserdata()
+        storeUserdata.addUserdata(
+          {
+            authid: this.user.id,
+            name: credentials.name,
+            city: credentials.city,
+            email: credentials.email,
+            numero: credentials.numero,
+            img: credentials.img,
+          }
+        )
       }).catch((error) => {
         // console.log('error.message: ', error.message)
       })
+
     },
     loginUser(credentials) {
       signInWithEmailAndPassword(auth, credentials.email, credentials.password).then((userCredential) => {

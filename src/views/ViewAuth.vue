@@ -48,6 +48,31 @@
             </div>
         </div>
 
+
+        <div class="field" :class="{ 'is-hidden' : !register }"
+>
+            <label class="label">Cidade</label>
+            <div class="control">
+            <input
+                v-model="credentials.city"
+                class="input"
+                placeholder="e.g Alex smith"
+            >
+            </div>
+        </div>
+
+        <div class="field" :class="{ 'is-hidden' : !register }"
+>
+            <label class="label">Numero</label>
+            <div class="control">
+            <input
+                v-model="credentials.numero"
+                class="input"
+                placeholder="e.g Alex smith"
+            >
+            </div>
+        </div>
+
         <div class="field">
             <label class="label">Password</label>
             <div class="control">
@@ -106,7 +131,10 @@ credentials
 const credentials = reactive({
     email: '',
     name: '',
-    password: ''
+    password: '',
+    city: '',
+    numero: '',
+    img: '',
 })
 
 /*
@@ -115,12 +143,11 @@ submit
 
 const onSubmit = () => {
     if (!credentials.email || !credentials.password) {
-    alert('Please enter an email and password gosh darnit!')
+    alert('Please enter an email and password!')
     }
     else {
     if (register.value) {
         storeAuth.registerUser(credentials)
-        storeUser.registerUser()
     }
     else {
         storeAuth.loginUser(credentials)
