@@ -38,10 +38,10 @@ export const useStoreAuth = defineStore('storeAuth', {
         // console.log('user: ', user)
 
         console.log(credentials)
+        
         const storeUserdata = useStoreUserdata()
         storeUserdata.addUserdata(
           {
-            authid: this.user.id,
             name: credentials.name,
             city: credentials.city,
             email: credentials.email,
@@ -64,10 +64,16 @@ export const useStoreAuth = defineStore('storeAuth', {
     },
     logoutUser() {
       signOut(auth).then(() => {
+        
         // console.log('User signed out')
       }).catch((error) => {
         // console.log(error.message)
       })
+    }
+  },
+  getters: {
+    getAuthEmail: (state) => {
+      return state.user.email
     }
   }
 })

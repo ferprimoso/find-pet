@@ -28,8 +28,7 @@
             :on-click="onClickHandler"
         />
     </div>
-   
-
+    
 </template>
 
 <script setup>

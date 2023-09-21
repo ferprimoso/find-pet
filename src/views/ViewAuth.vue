@@ -85,6 +85,14 @@
             </div>
         </div>
 
+        <div class="field is-grouped" :class="{ 'is-hidden' : !register }">
+        <div v-if="previewUrl">
+            <img :src="previewUrl" alt="Preview" style="max-width: 300px; max-height: 300px;">
+        </div>
+
+        <input type="file" @change="handleFileChange" accept="image/*">
+        </div>
+
         <div class="field is-grouped is-grouped-right">
             <p class="control">
             <button class="button is-primary is-warning">
@@ -103,6 +111,7 @@
 
 import { ref, computed, reactive } from 'vue'
 import { useStoreAuth } from '@/stores/storeAuth'
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 
 /*
 store
@@ -123,6 +132,35 @@ form title
 const formTitle = computed(() => {
     return register.value ? 'Register' : 'Login'
 })
+
+
+/* storage image */
+
+const storage = getStorage();
+let storageReference = null;
+let file = null;
+
+/* file selected */
+
+const previewUrl = ref(null)
+
+const handleFileChange = (event) => {
+  file = event.target.files[0];
+  if (file) {
+    previewImage(file);
+  }
+};
+
+const previewImage = (file) => {
+  const reader = new FileReader();
+  reader.onload = () => {
+    previewUrl.value = reader.result;
+  };
+  reader.readAsDataURL(file);
+};
+
+
+
 
 /*
 credentials
@@ -147,7 +185,24 @@ const onSubmit = () => {
     }
     else {
     if (register.value) {
-        storeAuth.registerUser(credentials)
+        storageReference = storageRef(storage, `images/${file.name}`);
+
+        uploadBytes(storageReference, file).then((snapshot) => {
+            console.log(file);
+            console.log('Uploaded a blob or file!');
+        })
+        .then(
+            getDownloadURL(storageReference)
+            .then((url) => {
+            // `url` is the download URL for 'images/stars.jpg'
+            // Or inserted into an <img> element
+            credentials.img = url
+            storeAuth.registerUser(credentials)
+            })
+            .catch((error) => {
+            // Handle any errors
+            }),
+        )
     }
     else {
         storeAuth.loginUser(credentials)

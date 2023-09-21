@@ -19,43 +19,12 @@ export const useStorePets = defineStore('storePets',{
   state: () => {
     return {
       pets: [
-        // {
-        //   id: 'id1',
-        //   name: 'Finn',
-        //   isCat: true,
-        //   cidade: 'Guarujá',
-        //   img: 'src/assets/IMG-20200327-WA0014.jpeg'
-        // },
-        // {
-        //   id: 'id2',
-        //   name: 'Sam',
-        //   isCat: true,
-        //   cidade: 'Campinas',
-        //   img: 'src/assets/20200407_130345.jpg'
-        // },
-        // {
-        //   id: 'id3',
-        //   name: 'Sam',
-        //   isCat: true,
-        //   cidade: 'Campinas',
-        //   img: 'src/assets/20200407_130345.jpg'
-        // },
-        // {
-        //   id: 'id4',
-        //   name: 'Sam',
-        //   isCat: true,
-        //   cidade: 'Campinas',
-        //   img: 'src/assets/20200407_130345.jpg'
-        // },
-        // {
         //   id: 'id5',
         //   name: 'Sam',
         //   isCat: true,
         //   cidade: 'Campinas',
         //   img: 'src/assets/20200407_130345.jpg'
         // }
-
-
       ]
     }
   },
@@ -65,21 +34,24 @@ export const useStorePets = defineStore('storePets',{
 
       this.getPets()
     },
-    async getPets() {
+    async getPets(specieFilter = false, sexFilter = false, sizeFilter = false) {
       if (getPetsSnapshot) getPetsSnapshot() // unsubscribe from any active listener
+
+
 
       getPetsSnapshot = onSnapshot(petCollectionQuery, (querySnapshot) => {
         let pets = []
         querySnapshot.forEach((doc) => {
           let pet = {
+            ownerId: doc.data().ownerId,
             id: doc.id,
-            name: doc.data().content.name,
-            sexo: doc.data().content.sexo,
-            especie: doc.data().content.especie,
-            porte: doc.data().content.porte,
-            cidade: doc.data().content.cidade,
-            img: doc.data().content.img,
-            descricao: doc.data().content.descricao,
+            name: doc.data().name,
+            sexo: doc.data().sexo,
+            especie: doc.data().especie,
+            porte: doc.data().porte,
+            cidade: doc.data().cidade,
+            img: doc.data().img,
+            descricao: doc.data().descricao,
           }
 
           pets.push(pet)
@@ -91,15 +63,18 @@ export const useStorePets = defineStore('storePets',{
       })
     },
     async addPet(newPetContent) {
-      await addDoc(petCollectionRef, {
-        content: newPetContent
-      })
+      await addDoc(petCollectionRef, newPetContent)
     } 
   },
   getters: {
     getPetContent: (state) => {
       return (id) => {
         return state.pets.filter(pet => pet.id === id)[0]
+      }
+    },
+    getUserPets: (state) => {
+      return (ownerId) => {
+        return state.pets.filter(pet => pet.ownerId === ownerId)
       }
     }
   }

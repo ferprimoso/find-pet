@@ -18,9 +18,11 @@
             <div class="navbar-end">
             <div class="navbar-item">
                 <div class="buttons">
-                <RouterLink class="button is-light" to="/userPage">
+                <a class="button is-light" 
+                    @click="goToProfile"
+                >
                     <strong>Meu perfil</strong>
-                </RouterLink>
+                </a>
                 <a class="button is-light"
                     v-if="storeAuth.user.id"
                     @click="logout"
@@ -53,14 +55,33 @@
 
 <script setup>
 
-  import { useStoreAuth } from '@/stores/storeAuth'
+import { useStoreAuth } from '@/stores/storeAuth'
+import { useStoreUserdata } from '@/stores/storeUserdata'
+import { ref } from 'vue';
+import { useRouter } from 'vue-router'
+
 
 /*
   store
 */
+const storeUserdata = useStoreUserdata();
+const storeAuth = useStoreAuth();
+const currentUserId = ref('')
 
-  const storeAuth = useStoreAuth()
+/*
+  router
+*/
 
+const router = useRouter()
+
+
+/*
+  gotoprofile
+*/
+const goToProfile = () => {
+    let userId = storeUserdata.getUserIdbyEmail(storeAuth.getAuthEmail);
+    router.push(`/userPage/${userId}`)
+  }
 
 /*
   logout

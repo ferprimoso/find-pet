@@ -80,6 +80,9 @@
 
 import { ref, reactive } from 'vue';
 import { useStorePets }from '@/stores/storePets'
+import { useStoreAuth }from '@/stores/storeAuth'
+
+import { useStoreUserdata } from '@/stores/storeUserdata'
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 
 /* storage image */
@@ -89,10 +92,12 @@ let storageReference = null;
 let file = null;
 
 /* form submit */
-
+const storeAuth = useStoreAuth();
+const storeUserdata = useStoreUserdata();
 const storePets = useStorePets();
 
 const petData = reactive({
+    ownerId: '',
     id: '11',
     name: '',
     sexo: 'macho',
@@ -116,6 +121,7 @@ const onSubmit = () => {
       // `url` is the download URL for 'images/stars.jpg'
       // Or inserted into an <img> element
       petData.img = url
+      petData.ownerId = storeUserdata.getUserIdbyEmail(storeAuth.getAuthEmail)
       storePets.addPet(petData)
     })
     .catch((error) => {

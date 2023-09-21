@@ -1,11 +1,10 @@
 import { defineStore } from 'pinia'
 import { 
   collection, onSnapshot,
-  doc, deleteDoc, updateDoc, addDoc, getDocs,
+  doc, deleteDoc, updateDoc, addDoc, getDoc, getDocs,
   query, orderBy, where 
 } from 'firebase/firestore'
 import { db } from '@/js/firebase'
-import { useStoreAuth } from '@/stores/storeAuth'
 
 let userdataCollectionRef = collection(db, 'users')
 let currentUserQuery 
@@ -16,72 +15,63 @@ export const useStoreUserdata = defineStore('storeUserdata',{
   state: () => {
     return {
       userdata:
-        {
+        [
           // id: 'id3',
           // name: 'Luiz Fernando',
           // city: 'Campinas',
           // email: 'test@test.com',
           // numero: '13 999999999',
           // img: 'src/assets/IMG-20200327-WA0014.jpeg'
-        }
+        ],
     }
   },
   actions: {
     init() {
-      const storeAuth = useStoreAuth()
-      currentUserQuery = query(userdataCollectionRef, where("authid","==",storeAuth.user.id))
+      currentUserQuery = query(userdataCollectionRef)
 
-      this.getCurrentUser()
+      this.getUsers()
     },
-    async getCurrentUser() {
-      if (getuserdataSnapshot) getuserdataSnapshot() // unsubscribe from any active listener
+    async getUsers() {
 
-      const querySnapshot = await getDocs(currentUserQuery);
+      const querySnapshot = await getDocs(userdataCollectionRef);
+      let userdata = []
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
         console.log(doc.id, " => ", doc.data());
           let user = {
-            id: doc.data().id,
+            id: doc.id,
             name: doc.data().name,
             city: doc.data().city,
             email: doc.data().email,
             numero: doc.data().numero,
             img: doc.data().img,
           }
-          this.userdata = user
 
-      });
-
-      // getuserdataSnapshot = onSnapshot(currentUserQuery, (querySnapshot) => {
-      //   querySnapshot((doc) => {
-      //     let user = {
-      //       id: doc.data().id,
-      //       name: doc.data().name,
-      //       city: doc.data().city,
-      //       email: doc.data().email,
-      //       numero: doc.data().numero,
-      //       img: doc.data().img,
-      //     }
-      //     this.userdata = user
-      //   })
-      //   // this.petsLoaded = true
-      // }, error => {
-      //   console.log('error.message: ', error.message)
-      // })
+          userdata.push(user)
+      })
+      this.userdata = userdata
     },
     async addUserdata(newUserdataContent) {
-        console.log(newUserdataContent);
         await addDoc(userdataCollectionRef, newUserdataContent
         );
     },
-    async removeCurrentUserdata() {
-      
-    }
-  },
+    },
   getters: {
-    getUserdataContent: (state) => {
-      return state.userdata
-      
+    getUserContent: (state) => {
+      return (email) => {
+        console.log(email)
+        return state.userdata.filter(user => user.email === email)[0]
+      }
+    },
+    getUserContentbyId: (state) => {
+      return (id) => {
+        return state.userdata.filter(user => user.id === id)[0]
+      }
+    },
+    getUserIdbyEmail: (state) =>{ 
+      return (email) => {
+        return state.userdata.filter(user => user.email === email)[0].id
+      }
     }
   }
 })

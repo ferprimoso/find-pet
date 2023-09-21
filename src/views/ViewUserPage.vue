@@ -2,21 +2,26 @@
 
 
     <div class="columns">
-        <figure class="image column">
+        <figure class="image">
             <img class="profile-image" :src="userDataContent.img">
         </figure>
-        <div class="column content is-medium">
-
-        </div>
-
-        <div class="column">
-          <pre>{{  userDataContent  }}</pre>
-        </div>
-
+  
+        <pre>{{  userDataContent  }}</pre>
 
 
     </div>
 
+    <h1 class="title is-4">Pets Disponibilizados:</h1>
+
+    <div class="columns is-multiline">
+
+    <Pets
+    v-for="(pet) in userPets"
+    :key="pet.id"
+    :pet="pet"
+    />
+
+    </div>
 
 </template>
 
@@ -29,6 +34,16 @@ import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStorePets }from '@/stores/storePets'
 import { useStoreUserdata } from '@/stores/storeUserdata'
+import { useStoreAuth } from '../stores/storeAuth';
+import Pets from '@/components/Pets/Pets.vue';
+
+
+
+/*
+  router
+*/
+
+const route = useRoute()
 
 
 /* userData content */
@@ -36,9 +51,16 @@ import { useStoreUserdata } from '@/stores/storeUserdata'
 const storeUserdata = useStoreUserdata()
 const userDataContent = ref('')
 
-userDataContent.value = storeUserdata.getUserdataContent
+userDataContent.value = storeUserdata.getUserContentbyId(route.params.id)
+
+/* user pets */
+
+const storePets = useStorePets();
 
 
+const userPets = storePets.getUserPets(userDataContent.value.id)
+console.log(userPets);
+    
 
 
 </script>

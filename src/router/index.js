@@ -14,7 +14,7 @@ const routes = [
     component: ViewPets,
   },
   {
-    path: '/userPage/',
+    path: '/userPage/:id',
     name: 'userPage',
     component: ViewUserPage
   },
