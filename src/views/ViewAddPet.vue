@@ -73,6 +73,9 @@
 
 </form>  
 
+<button @click="getTime">Update Timestamp</button>
+
+
 </template>
 
 <script setup>
@@ -98,14 +101,16 @@ const storePets = useStorePets();
 
 const petData = reactive({
     ownerId: '',
-    id: '11',
+    // id: '11',
     name: '',
+    date: '',
     sexo: 'macho',
     especie: 'cachorro',
     porte: 'pequeno',
     cidade: 'campinas',
     img: '',
-    descricao: ''
+    descricao: '',
+    adopted: false
   })
 
 const onSubmit = () => {
@@ -120,6 +125,7 @@ const onSubmit = () => {
     .then((url) => {
       // `url` is the download URL for 'images/stars.jpg'
       // Or inserted into an <img> element
+      petData.date = new Date()
       petData.img = url
       petData.ownerId = storeUserdata.getUserIdbyEmail(storeAuth.getAuthEmail)
       storePets.addPet(petData)

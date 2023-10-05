@@ -48,21 +48,7 @@
             </div>
         </div>
 
-
-        <div class="field" :class="{ 'is-hidden' : !register }"
->
-            <label class="label">Cidade</label>
-            <div class="control">
-            <input
-                v-model="credentials.city"
-                class="input"
-                placeholder="e.g Alex smith"
-            >
-            </div>
-        </div>
-
-        <div class="field" :class="{ 'is-hidden' : !register }"
->
+        <div class="field" :class="{ 'is-hidden' : !register }">
             <label class="label">Numero</label>
             <div class="control">
             <input
@@ -70,6 +56,31 @@
                 class="input"
                 placeholder="e.g Alex smith"
             >
+            </div>
+        </div>
+
+        <div class="field" :class="{ 'is-hidden' : !register }">
+            <label class="label">Estado</label>
+                <div class="control">
+                <div class="select">
+                    <select v-model="selectedState">
+                        <option value="" disabled selected> Selecione o Estado</option>
+                        <option v-for="estado in brazilCityStates.estados" :key="estado.sigla" :value="estado"> {{ estado.nome }}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="field" :class="{ 'is-hidden' : !register }">
+            <label class="label">Cidade</label>
+                <div class="control">
+                <div class="select">
+                    <select v-model="credentials.city" :key="selectedState.sigla">
+                        <option value="" disabled selected> Selecione a Cidade</option>
+                        <option v-for="cidade in selectedState.cidades" :key="cidade" :value="cidade"> {{ cidade }}</option>
+                    </select>
+                </div>
             </div>
         </div>
 
@@ -104,14 +115,19 @@
 
     </div>
     </div>
+
+
+    <button @click="() => console.log(credentials)">a</button>
 </div>
 </template>
 
 <script setup>
 
+import brazilCityStates from '@/js/citystate.json'
 import { ref, computed, reactive } from 'vue'
 import { useStoreAuth } from '@/stores/storeAuth'
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+
 
 /*
 store
@@ -166,10 +182,13 @@ const previewImage = (file) => {
 credentials
 */
 
+const selectedState = ref('');
+
 const credentials = reactive({
     email: '',
     name: '',
     password: '',
+    state: '',
     city: '',
     numero: '',
     img: '',
@@ -196,6 +215,7 @@ const onSubmit = () => {
             .then((url) => {
             // `url` is the download URL for 'images/stars.jpg'
             // Or inserted into an <img> element
+            credentials.state = selectedState.value.nome
             credentials.img = url
             storeAuth.registerUser(credentials)
             })

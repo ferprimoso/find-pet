@@ -45,6 +45,7 @@ export const useStorePets = defineStore('storePets',{
           let pet = {
             ownerId: doc.data().ownerId,
             id: doc.id,
+            date: doc.data().date,
             name: doc.data().name,
             sexo: doc.data().sexo,
             especie: doc.data().especie,
@@ -52,6 +53,7 @@ export const useStorePets = defineStore('storePets',{
             cidade: doc.data().cidade,
             img: doc.data().img,
             descricao: doc.data().descricao,
+            adopted: doc.data().adopted
           }
 
           pets.push(pet)

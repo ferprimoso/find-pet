@@ -41,6 +41,7 @@ export const useStoreUserdata = defineStore('storeUserdata',{
           let user = {
             id: doc.id,
             name: doc.data().name,
+            state: doc.data().state,
             city: doc.data().city,
             email: doc.data().email,
             numero: doc.data().numero,

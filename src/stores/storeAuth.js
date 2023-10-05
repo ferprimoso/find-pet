@@ -43,6 +43,7 @@ export const useStoreAuth = defineStore('storeAuth', {
         storeUserdata.addUserdata(
           {
             name: credentials.name,
+            state: credentials.state,
             city: credentials.city,
             email: credentials.email,
             numero: credentials.numero,

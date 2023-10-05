@@ -1,9 +1,26 @@
 <template>
 
     <div class="columns">
-        <figure class="image column">
-            <img :src="petContent.img" alt="Pet image">
-        </figure>
+      <div class="column m-4">
+        <div class="image is-4by5 is-relative">
+            <img :src="petContent.img"  alt="Pet image">
+            <div v-if="petContent.adopted === true" :class="{ 'is-adopted' : petContent.adopted }"> ADOTADO </div>
+            <div :class="{ 'is-adopted-bg' : petContent.adopted }"></div>
+        </div>
+      
+      
+      
+      
+      
+      </div>
+
+
+
+
+        <!-- <figure class="image column is-relative">
+            <img :src="petContent.img"  alt="Pet image">
+            <div :class="{ 'is-adopted' : !petContent.adopted }"> ADOTADO </div>
+        </figure> -->
         <div class="column content is-medium">
             <h1 >{{ petContent.name }}</h1>
             <p >{{ petContent.sexo }}</p>
@@ -14,6 +31,12 @@
 
         </div>
     </div>
+
+    <pre>  {{ petContent }}</pre>
+
+
+
+
 
     <h1 class="title is-4">Responsavel:</h1>
 
@@ -40,9 +63,9 @@
       </div>
     
     </RouterLink>
-
+<!-- 
     <pre> {{ userContent }}</pre>
-    <pre> {{ petContent.ownerEmail }}</pre>
+    <pre> {{ petContent.ownerEmail }}</pre> -->
 
     
 </template>
@@ -82,4 +105,53 @@ petContent.value = storePets.getPetContent(route.params.id)
 userContent.value = storeUserdata.getUserContentbyId(petContent.value.ownerId)
 
 
+/*
+  is-adopted
+*/
+
 </script>
+
+<style>
+.image-container {
+  width: 400px;
+  height: 600px;
+}
+
+.is-adopted {
+  height: 10%;
+  width: 100%;
+  position: absolute;
+  bottom: 0px; /* Adjust this value to change the vertical position of the subtitle */
+  left: 0px; /* Adjust this value to change the horizontal position of the subtitle */
+  background-color: rgb(255, 0, 0, 0.5); /* Background color for the subtitle */
+  color: white; /* Text color for the subtitle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 90%;
+  font-weight: bold;
+  font-size: 36px; /* Font size for the subtitle */
+  z-index: 1;
+}
+
+.is-adopted-bg {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  bottom: 0px; /* Adjust this value to change the vertical position of the subtitle */
+  left: 0px; /* Adjust this value to change the horizontal position of the subtitle */
+  background-color: black	; /* Background color for the subtitle */
+  color: white; /* Text color for the subtitle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 30%;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+}
+
+
+</style>

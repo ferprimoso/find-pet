@@ -1,15 +1,29 @@
 <template>
 
+    <div class="box is-flex is-justify-content-space-around is-justify-content-center	">
+      <div class="profile-picture">
+          <img alt="profile picture" :src="userDataContent.img">
+        </div>
 
-    <div class="columns">
-        <figure class="image">
-            <img class="profile-image" :src="userDataContent.img">
-        </figure>
-  
-        <pre>{{  userDataContent  }}</pre>
+        <div class="is-flex is-flex-direction-column is-align-content-center is-justify-content-space-around	">
+          <h1 class="title is-2 mb-0">{{ userDataContent.name }}</h1>
+          <h2 class="subtitle is-4"> {{ userDataContent.state}}, {{ userDataContent.city }}</h2>
 
 
+          <div>
+            <h2 class="subtitle mb-0"> <i class="fa-solid fa-phone"></i> {{ userDataContent.numero }}</h2>          
+            <h2 class="subtitle"> <i class="fa-regular fa-envelope"></i> {{ userDataContent.email }}</h2>     
+          </div>
+       
+        </div>
     </div>
+       
+    <!-- <pre>{{ userDataContent  }}</pre> -->
+
+
+    <h1 class="title is-4"> {{ userPets.length }} Pets Divulgados</h1>
+    <h1 class="title is-4 is-warning"> {{ userPets.length }} Pets Adotados</h1>
+
 
     <h1 class="title is-4">Pets Disponibilizados:</h1>
 
@@ -66,7 +80,7 @@ console.log(userPets);
 </script>
 
 <style>
-.profile-card {
+/* .profile-card {
   max-width: 400px;
   max-height: 400px;
   margin: 0 auto;
@@ -83,5 +97,20 @@ console.log(userPets);
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 20px;
+} */
+
+
+.profile-picture {
+  width: 200px; /* Adjust the width and height as needed */
+  height: 200px;
+  border-radius: 50%; /* This creates a circular shape */
+  overflow: hidden; /* This hides the image overflow outside the circle */
+  border: 2px solid #fff; /* You can add a border around the image if desired */
+}
+
+.profile-picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image covers the circular container */
 }
 </style>
