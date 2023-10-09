@@ -19,8 +19,8 @@
     <div class="card-content">
       <div class="media">
         <div class="media-content">
-          <p class="title is-4 ">{{ pet.name }}</p>
-          <p class="subtitle is-6">{{ pet.cidade }}</p>
+          <p class="title is-4 has-text-warning has-text-weight-bold">{{ pet.name }}</p>
+          <p class="subtitle is-6">{{ pet.cidade }}, {{ pet.state }}</p>
         </div>
       </div>
     </div>

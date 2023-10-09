@@ -21,17 +21,44 @@
             <img :src="petContent.img"  alt="Pet image">
             <div :class="{ 'is-adopted' : !petContent.adopted }"> ADOTADO </div>
         </figure> -->
-        <div class="column content is-medium">
-            <h1 >{{ petContent.name }}</h1>
-            <p >{{ petContent.sexo }}</p>
-            <p >{{ petContent.especie }}</p>
-            <p >{{ petContent.cidade }}</p>
-            <p > porte: {{ petContent.porte }}</p>
+        <div class="column m-4 content is-medium">
+            <h1 class="has-text-warning mb-0">{{ petContent.name }}</h1>
+            <span class="subtitle " >{{ petContent.especie }} / {{ petContent.sexo }} / porte {{ petContent.porte }} </span>
+            <br>
+            <i class="fa-solid fa-location-dot"></i> <span>{{ petContent.cidade }} - {{ petContent.state }} </span>
+            <br>
+            <p>Disponibilizado por
+              <RouterLink
+                :to="`/userPage/${ userContent.id }`"
+                href="#"
+                  >
+                      <span >{{ userContent.email }}</span>
+              </RouterLink>
+              <span> em {{ formattedDate }}</span>
+              
+            </p>
+
+
+            <h2 class="has-text-warning title is-4 mb-0">Descrição:</h2>
             <p >{{ petContent.descricao }}</p>
+
+            
+
+            <button class="button is-large is-fullwidth is-warning has-text-white has-text-weight-bold"
+                @click.prevent="modals.contact = true"
+                href="#"
+            >Quero Adotar</button>
 
         </div>
     </div>
 
+    <ModalContact
+              v-if="modals.contact"
+              v-model="modals.contact"
+              :user="userContent"
+    />
+
+<!-- 
     <pre>  {{ petContent }}</pre>
 
 
@@ -63,9 +90,7 @@
       </div>
     
     </RouterLink>
-<!-- 
-    <pre> {{ userContent }}</pre>
-    <pre> {{ petContent.ownerEmail }}</pre> -->
+ -->
 
     
 </template>
@@ -75,10 +100,11 @@
 /*
 imports
 */
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStorePets }from '@/stores/storePets'
 import { useStoreUserdata } from '@/stores/storeUserdata'
+import  ModalContact from '@/components/Pets/ModalContact.vue'
 
 /*
   router
@@ -106,10 +132,41 @@ userContent.value = storeUserdata.getUserContentbyId(petContent.value.ownerId)
 
 
 /*
-  is-adopted
+  petDate
 */
 
+
+// Create a new Date object
+const petDate = petContent.value.date.toDate();
+
+// Get the day, month, and year components
+const day = petDate.getDate().toString().padStart(2, '0');
+const month = (petDate.getMonth() + 1).toString().padStart(2, '0'); // Note: Months are zero-based, so we add 1.
+const year = petDate.getFullYear();
+
+// Create the formatted date string in "dd/mm/yyyy" format
+const formattedDate = `${day}/${month}/${year}`;
+
+/*
+  modals
+*/
+
+const modals = reactive({
+    contact: false
+  })
+
+
+
 </script>
+
+
+
+
+
+
+
+
+
 
 <style>
 .image-container {

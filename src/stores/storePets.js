@@ -50,6 +50,7 @@ export const useStorePets = defineStore('storePets',{
             sexo: doc.data().sexo,
             especie: doc.data().especie,
             porte: doc.data().porte,
+            state: doc.data().state,
             cidade: doc.data().cidade,
             img: doc.data().img,
             descricao: doc.data().descricao,

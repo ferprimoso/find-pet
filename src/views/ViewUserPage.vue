@@ -21,8 +21,15 @@
     <!-- <pre>{{ userDataContent  }}</pre> -->
 
 
-    <h1 class="title is-4"> {{ userPets.length }} Pets Divulgados</h1>
-    <h1 class="title is-4 is-warning"> {{ userPets.length }} Pets Adotados</h1>
+    <div class="mb-4 is-flex is-justify-content-center">
+      <h1 class="title is-4 has-text-weight-normal"> 
+      <span class="has-text-warning">  {{ userPets.length }} </span>
+      Pets Divulgados 
+      <span class="has-text-warning">{{ userPets.filter(pet => pet.adopted === true ).length }} </span>
+      Pets Adotados
+      </h1>
+    </div>
+  
 
 
     <h1 class="title is-4">Pets Disponibilizados:</h1>
@@ -73,7 +80,6 @@ const storePets = useStorePets();
 
 
 const userPets = storePets.getUserPets(userDataContent.value.id)
-console.log(userPets);
     
 
 

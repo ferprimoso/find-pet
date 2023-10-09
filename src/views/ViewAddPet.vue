@@ -15,8 +15,8 @@
     <div class="control">
       <div class="select">
         <select v-model="petData.sexo">
-          <option value="macho">Macho</option>
-          <option value="femea">Femêa</option>
+          <option value="Macho">Macho</option>
+          <option value="Femea">Femêa</option>
         </select>
       </div>
     </div>
@@ -27,8 +27,8 @@
     <div class="control">
       <div class="select">
         <select v-model="petData.especie">
-          <option value="cachorro">Cachorro</option>
-          <option value="gato">Gato</option>
+          <option value="Cachorro">Cachorro</option>
+          <option value="Gato">Gato</option>
         </select>
       </div>
     </div>
@@ -104,10 +104,11 @@ const petData = reactive({
     // id: '11',
     name: '',
     date: '',
-    sexo: 'macho',
-    especie: 'cachorro',
+    sexo: 'Macho',
+    especie: 'Cachorro',
     porte: 'pequeno',
-    cidade: 'campinas',
+    state: '',
+    cidade: '',
     img: '',
     descricao: '',
     adopted: false
@@ -128,6 +129,8 @@ const onSubmit = () => {
       petData.date = new Date()
       petData.img = url
       petData.ownerId = storeUserdata.getUserIdbyEmail(storeAuth.getAuthEmail)
+      petData.cidade = storeUserdata.getUserContent(storeAuth.getAuthEmail).city
+      petData.state = storeUserdata.getUserContent(storeAuth.getAuthEmail).state
       storePets.addPet(petData)
     })
     .catch((error) => {
