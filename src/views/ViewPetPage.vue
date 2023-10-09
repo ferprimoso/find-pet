@@ -47,7 +47,29 @@
             <button class="button is-large is-fullwidth is-warning has-text-white has-text-weight-bold"
                 @click.prevent="modals.contact = true"
                 href="#"
+                v-if="!isPetOwner"
             >Quero Adotar</button>
+
+            <button class="button is-large is-fullwidth is-link has-text-white has-text-weight-bold mb-4"
+                href="#"
+                v-if="isPetOwner"
+                @click="petContent.adopted = !petContent.adopted"
+            >
+            <span v-if="!petContent.adopted">
+              Sinalizar como adotado
+            </span>
+            <span v-if="petContent.adopted">
+              Sinalizar como para adoção
+            </span>
+            
+            
+            </button>
+
+            <button class="button is-large is-fullwidth is-danger has-text-white has-text-weight-bold"
+                href="#"
+                v-if="isPetOwner"
+            >Excluir Pet</button>
+
 
         </div>
     </div>
@@ -58,41 +80,6 @@
               :user="userContent"
     />
 
-<!-- 
-    <pre>  {{ petContent }}</pre>
-
-
-
-
-
-    <h1 class="title is-4">Responsavel:</h1>
-
-    <RouterLink
-            :to="`/userPage/${ userContent.id }`"
-            href="#"
-          >
-    
-      <div class="card">
-        <div class="card-image">
-          <figure class="image is-4by3">
-            <img :src="userContent.img" alt="userContent image">
-          </figure>
-        </div>
-    
-        <div class="card-content">
-          <div class="media">
-            <div class="media-content">
-              <p class="title is-4 ">{{ userContent.name }}</p>
-              <p class="subtitle is-6">{{ userContent.cidade }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    
-    </RouterLink>
- -->
-
-    
 </template>
 
 <script setup>
@@ -100,10 +87,11 @@
 /*
 imports
 */
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStorePets }from '@/stores/storePets'
 import { useStoreUserdata } from '@/stores/storeUserdata'
+import { useStoreAuth } from '@/stores/storeAuth'
 import  ModalContact from '@/components/Pets/ModalContact.vue'
 
 /*
@@ -117,6 +105,7 @@ const router = useRouter()
 
 const storePets = useStorePets();
 const storeUserdata = useStoreUserdata();
+const storeAuth = useStoreAuth();
 
 
 /*
@@ -155,6 +144,22 @@ const modals = reactive({
     contact: false
   })
 
+/* is current user pet */
+
+const isPetOwner = computed(() => {
+  if ( userContent.value.email === storeAuth.getAuthEmail) {
+    return true
+  } else {
+    return false
+  }
+})
+
+
+  
+
+// })
+console.log(userContent.value.email);
+console.log(storeAuth.getAuthEmail);
 
 
 </script>

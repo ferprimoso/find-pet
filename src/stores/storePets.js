@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
 import { 
   collection, onSnapshot,
-  doc, deleteDoc, updateDoc, addDoc, 
-  query, orderBy 
+  doc, deleteDoc, updateDoc, addDoc, getDocs, 
+  query, orderBy, where
 } from 'firebase/firestore'
 import { db } from '@/js/firebase'
 import { useStoreAuth } from '@/stores/storeAuth'
@@ -34,10 +34,8 @@ export const useStorePets = defineStore('storePets',{
 
       this.getPets()
     },
-    async getPets(specieFilter = false, sexFilter = false, sizeFilter = false) {
+    async getPets() {
       if (getPetsSnapshot) getPetsSnapshot() // unsubscribe from any active listener
-
-
 
       getPetsSnapshot = onSnapshot(petCollectionQuery, (querySnapshot) => {
         let pets = []
@@ -67,7 +65,22 @@ export const useStorePets = defineStore('storePets',{
     },
     async addPet(newPetContent) {
       await addDoc(petCollectionRef, newPetContent)
-    } 
+    },
+    async perfomSearch(especie, sexo) {
+
+
+    const q = query(petCollectionRef, where("especie", "==", 'Cachorro'));
+    const q2 = query(petCollectionRef, where("especie", "==", 'Cachorro'));
+
+
+    const querySnapshot = await getDocs(q);
+    this.pets = []
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      this.pets.push(doc.data())
+    });
+
+    }
   },
   getters: {
     getPetContent: (state) => {

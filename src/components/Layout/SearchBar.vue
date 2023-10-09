@@ -1,8 +1,7 @@
 <template>
     <!-- Main container -->
-<nav class="level">
+<nav class="level is-flex-wrap-wrap	">
   <!-- Left side -->
-    <div class="level-left">
       <div class="level-item">
           <div class="select">
           <select>
@@ -34,30 +33,74 @@
         </div>
       </div>
 
+      <div class="level-item">
+          <div class="select">
+            <select v-model="selectedState">
+                        <option value="" disabled selected> Selecione o Estado</option>
+                        <option v-for="estado in brazilCityStates.estados" :key="estado.sigla" :value="estado"> {{ estado.nome }}</option>
+            </select>
+        </div>
+      </div>
 
-
-    
-  </div>
+      <div class="level-item">
+          <div class="select">
+            <select v-model="selectedCity" :key="selectedState.sigla">
+                        <option value="" disabled selected> Selecione a Cidade</option>
+                        <option v-for="cidade in selectedState.cidades" :key="cidade" :value="cidade"> {{ cidade }}</option>
+           </select>
+        </div>
+      </div>
 
   <!-- Right side -->
-  <div class="level-right">
-    <div class="level-item">
-      <div class="field has-addons">
+    <div class="level-item ">
+      <div class="field is-flex-grow-1">
         <p class="control">
           <input class="input" type="text" placeholder="Nome do bicho">
         </p>
-        <p class="control">
-          <button class="button">
+        
+      </div>
+    </div>
+
+    <div class="level-item" >
+      <p class="control">
+          <button class="button is-warning"
+            @click=""
+          >
             Pesquisar
           </button>
         </p>
-      </div>
     </div>
-  </div>
+
 </nav>
 </template>
 
 <script setup>
 
+import { ref } from 'vue'
+import { useStorePets }from '@/stores/storePets'
+import brazilCityStates from '@/js/citystate.json'
+
+/* pet store*/ 
+
+const storePets = useStorePets();
+
+
+/* selected state */
+
+const selectedState = ref('');
+const selectedCity = ref('');
+
 
 </script>
+
+
+
+
+
+
+
+<style>
+
+
+
+</style>
