@@ -84,9 +84,12 @@
 import { ref, reactive } from 'vue';
 import { useStorePets }from '@/stores/storePets'
 import { useStoreAuth }from '@/stores/storeAuth'
-
 import { useStoreUserdata } from '@/stores/storeUserdata'
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+import { useRouter } from 'vue-router'
+
+
+const router = useRouter()
 
 /* storage image */
 
@@ -132,6 +135,7 @@ const onSubmit = () => {
       petData.cidade = storeUserdata.getUserContent(storeAuth.getAuthEmail).city
       petData.state = storeUserdata.getUserContent(storeAuth.getAuthEmail).state
       storePets.addPet(petData)
+      router.push('/')
     })
     .catch((error) => {
       // Handle any errors

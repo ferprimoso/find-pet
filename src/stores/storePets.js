@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { 
   collection, onSnapshot,
-  doc, deleteDoc, updateDoc, addDoc, getDocs, 
+  doc, deleteDoc, updateDoc, addDoc, getDocs, getDoc,
   query, orderBy, where
 } from 'firebase/firestore'
 import { db } from '@/js/firebase'
@@ -10,22 +10,14 @@ import { useStoreAuth } from '@/stores/storeAuth'
 
 let petCollectionRef = collection(db, 'pets')
 let petCollectionQuery 
- 
 let getPetsSnapshot = null
-
 
 
 export const useStorePets = defineStore('storePets',{
   state: () => {
     return {
-      pets: [
-        //   id: 'id5',
-        //   name: 'Sam',
-        //   isCat: true,
-        //   cidade: 'Campinas',
-        //   img: 'src/assets/20200407_130345.jpg'
-        // }
-      ]
+      pets: [],
+      petsLoaded: false,
     }
   },
   actions: {
@@ -35,30 +27,19 @@ export const useStorePets = defineStore('storePets',{
       this.getPets()
     },
     async getPets() {
+      this.petsLoaded = false
+
       if (getPetsSnapshot) getPetsSnapshot() // unsubscribe from any active listener
 
       getPetsSnapshot = onSnapshot(petCollectionQuery, (querySnapshot) => {
         let pets = []
         querySnapshot.forEach((doc) => {
-          let pet = {
-            ownerId: doc.data().ownerId,
-            id: doc.id,
-            date: doc.data().date,
-            name: doc.data().name,
-            sexo: doc.data().sexo,
-            especie: doc.data().especie,
-            porte: doc.data().porte,
-            state: doc.data().state,
-            cidade: doc.data().cidade,
-            img: doc.data().img,
-            descricao: doc.data().descricao,
-            adopted: doc.data().adopted
-          }
-
+          let pet = doc.data();
+          pet.id = doc.id
           pets.push(pet)
         })
         this.pets = pets
-        // this.petsLoaded = true
+        this.petsLoaded = true
       }, error => {
         console.log('error.message: ', error.message)
       })
@@ -66,20 +47,62 @@ export const useStorePets = defineStore('storePets',{
     async addPet(newPetContent) {
       await addDoc(petCollectionRef, newPetContent)
     },
-    async perfomSearch(especie, sexo) {
+    async performSearch(filterObj) {
+    
+    this.petsLoaded = false
+
+    let q = petCollectionRef
 
 
-    const q = query(petCollectionRef, where("especie", "==", 'Cachorro'));
-    const q2 = query(petCollectionRef, where("especie", "==", 'Cachorro'));
+    if (filterObj.especie) {
+      q = query(q, where("especie", "==", filterObj.especie));
+    }
 
+    if (filterObj.sexo) {
+      q = query(q, where("sexo", "==", filterObj.sexo));
+    }
+
+    if (filterObj.porte) {
+      q = query(q, where("porte", "==", filterObj.porte));
+    }
+
+    if (filterObj.state) {
+      q = query(q, where("state", "==", filterObj.state.nome));
+    }
+
+    if (filterObj.cidade) {
+      q = query(q, where("cidade", "==", filterObj.cidade));
+    }
+
+    if (filterObj.name) {
+      q = query(q, where("name", "==", filterObj.name));
+    }
 
     const querySnapshot = await getDocs(q);
     this.pets = []
     querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      this.pets.push(doc.data())
+      let pet = doc.data()
+      pet.id = doc.id
+      this.pets.push(pet)
     });
+    this.petsLoaded = true
 
+    },
+    async deletePet(petId) {
+      await deleteDoc(doc(petCollectionRef, petId))
+    },
+    async adoptPet(petId) {
+      const petRef = doc(petCollectionRef, petId)
+      const petSnapshot = await getDoc(petRef);
+      const currentAdoptionStatus = petSnapshot.data().adopted;
+
+      // Toggle the 'adopted' field
+      const newAdoptionStatus = !currentAdoptionStatus;
+
+      // Update the Firestore document
+      await updateDoc(petRef, {
+        adopted: newAdoptionStatus
+      });
     }
   },
   getters: {

@@ -6,16 +6,17 @@
         ref="modalCardRef"
         >
             <header class="modal-card-head">
-            <p class="modal-card-title">Contato para Adoção</p>
+            <p class="modal-card-title">Tem certeza que deseja excluir o pet?</p>
             <!-- <button class="delete" aria-label="close"></button> -->
             </header>
-            <section class="modal-card-body">
-                <span> <i class="fa-brands fa-whatsapp"></i>     {{ user.numero }}</span>
+            <!-- <section class="modal-card-body">
+                <span> <i class="fa-brands fa-whatsapp"></i>     {{ pet.id }}</span>
                 <br>
-                <span> <i class="fa-regular fa-envelope"></i> {{ user.email }}  </span>
-            </section>
+                <span> <i class="fa-regular fa-envelope"></i> {{ pet.name }}  </span>
+            </section> -->
             <footer class="modal-card-foot">
-            <button class="button is-warning" @click="closeModal">Fechar</button>
+            <button class="button is-warning" @click="deleteAndCloseModal">Excluir</button>
+            <button class="button is-warning" @click="closeModal">Cancelar</button>
             </footer>
         </div>
     </div>
@@ -29,6 +30,20 @@
 
   import { ref, onMounted, onUnmounted } from 'vue'
   import { onClickOutside } from '@vueuse/core'
+  import { useStorePets }from '@/stores/storePets'
+  import { useRoute, useRouter } from 'vue-router'
+
+
+  const router = useRouter()
+
+
+/* 
+  pet store
+*/
+
+const storePets = useStorePets();
+
+
 
 /*
   props
@@ -39,7 +54,7 @@
       type: Boolean,
       default: false
     },
-    user: {
+    pet: {
       type: Object,
       required: true
     }
@@ -64,6 +79,17 @@
   const closeModal = () => {
     emit('update:modelValue', false)
   }
+
+/*
+  delete and close modal
+*/ 
+
+ const deleteAndCloseModal = () => {
+  closeModal()
+  storePets.deletePet(props.pet.id)
+  router.push('/')
+ }
+
 
 /*
   click outside to close

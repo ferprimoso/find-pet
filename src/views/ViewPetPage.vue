@@ -53,7 +53,7 @@
             <button class="button is-large is-fullwidth is-link has-text-white has-text-weight-bold mb-4"
                 href="#"
                 v-if="isPetOwner"
-                @click="petContent.adopted = !petContent.adopted"
+                @click.prevent="modals.adopted = true"
             >
             <span v-if="!petContent.adopted">
               Sinalizar como adotado
@@ -68,6 +68,7 @@
             <button class="button is-large is-fullwidth is-danger has-text-white has-text-weight-bold"
                 href="#"
                 v-if="isPetOwner"
+                @click.prevent="modals.delete = true"
             >Excluir Pet</button>
 
 
@@ -78,6 +79,18 @@
               v-if="modals.contact"
               v-model="modals.contact"
               :user="userContent"
+    />
+
+    <ModalDeletePet
+             v-if="modals.delete"
+            v-model="modals.delete"
+            :pet="petContent"
+    />
+
+    <ModalAdopted
+             v-if="modals.adopted"
+            v-model="modals.adopted"
+            :pet="petContent"
     />
 
 </template>
@@ -92,7 +105,9 @@ import { useRoute, useRouter } from 'vue-router'
 import { useStorePets }from '@/stores/storePets'
 import { useStoreUserdata } from '@/stores/storeUserdata'
 import { useStoreAuth } from '@/stores/storeAuth'
-import  ModalContact from '@/components/Pets/ModalContact.vue'
+import ModalContact from '@/components/Pets/ModalContact.vue'
+import ModalDeletePet from '@/components/Pets/ModalDeletePet.vue'
+import ModalAdopted from '../components/Pets/ModalAdopted.vue'
 
 /*
   router
@@ -141,7 +156,9 @@ const formattedDate = `${day}/${month}/${year}`;
 */
 
 const modals = reactive({
-    contact: false
+    contact: false,
+    delete: false,
+    adopted: false
   })
 
 /* is current user pet */

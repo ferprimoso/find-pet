@@ -1,24 +1,20 @@
 <template >
-    <div class="modal is-active p-2" >
-        <div class="modal-background"></div>
-        <div 
-        class="modal-card"
-        ref="modalCardRef"
-        >
-            <header class="modal-card-head">
-            <p class="modal-card-title">Contato para Adoção</p>
-            <!-- <button class="delete" aria-label="close"></button> -->
-            </header>
-            <section class="modal-card-body">
-                <span> <i class="fa-brands fa-whatsapp"></i>     {{ user.numero }}</span>
-                <br>
-                <span> <i class="fa-regular fa-envelope"></i> {{ user.email }}  </span>
-            </section>
-            <footer class="modal-card-foot">
-            <button class="button is-warning" @click="closeModal">Fechar</button>
-            </footer>
-        </div>
-    </div>
+  <div class="modal is-active p-2" >
+      <div class="modal-background"></div>
+      <div 
+      class="modal-card"
+      ref="modalCardRef"
+      >
+          <header class="modal-card-head">
+          <p class="modal-card-title">Tem certeza que deseja sinalizar o pet como adotado?</p>
+          </header>
+      
+          <footer class="modal-card-foot">
+          <button class="button is-warning" @click="adoptAndCloseModal">Sim</button>
+          <button class="button is-warning" @click="closeModal">Cancelar</button>
+          </footer>
+      </div>
+  </div>
 </template>
 
 <script setup>
@@ -27,8 +23,20 @@
   imports
 */
 
-  import { ref, onMounted, onUnmounted } from 'vue'
-  import { onClickOutside } from '@vueuse/core'
+import { ref, onMounted, onUnmounted } from 'vue'
+import { onClickOutside } from '@vueuse/core'
+import { useStorePets }from '@/stores/storePets'
+import { useRoute, useRouter } from 'vue-router'
+
+
+const router = useRouter()
+
+/* 
+  pet store
+*/
+
+const storePets = useStorePets();
+
 
 /*
   props
@@ -39,7 +47,7 @@
       type: Boolean,
       default: false
     },
-    user: {
+    pet: {
       type: Object,
       required: true
     }
@@ -52,10 +60,15 @@
   const emit = defineEmits(['update:modelValue'])
 
 /*
-  store
-*/
+  delete and close modal
+*/ 
 
-
+const adoptAndCloseModal = () => {
+  closeModal()
+  storePets.adoptPet(props.pet.id)
+  storePets.init()
+  router.push('/')
+ }
 
 /*
   close modal

@@ -10,13 +10,19 @@
     <SearchBar/>
 
     <div class="columns is-multiline">
-
+        <progress
+          v-if="!storePets.petsLoaded"
+          class="progress is-large is-success"
+          max="100"
+        />
+          
         <Pets
         v-for="(pet, index) in paginatedPets"
         :key="pet.id"
         :pet="pet"
          />
 
+         
     </div>
 
     <div class="columns is-centered is-mobile mt-4">
@@ -37,7 +43,7 @@
 imports
 */
 
-import { ref, computed, onMounted } from "vue";
+import { ref, computed } from "vue";
 import Pets from '@/components/Pets/Pets.vue';
 import SearchBar from '@/components/Layout/SearchBar.vue';
 import { useStorePets }from '@/stores/storePets'
@@ -60,7 +66,13 @@ const paginatedPets = computed(() => {
       return storePets.pets.slice(startIndex, endIndex);
     });
 
-/* onMonted */
+// /* unMounted */
+
+// onUnmounted(() => {
+//   storePets.getPets();
+//   console.log('hi');
+// })
+
 
 </script>
 

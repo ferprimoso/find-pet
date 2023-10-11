@@ -34,7 +34,6 @@
 </template>
 
 <script setup>
-
 /*
   props
 */

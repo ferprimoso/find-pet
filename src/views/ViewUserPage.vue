@@ -17,10 +17,7 @@
        
         </div>
     </div>
-       
-    <!-- <pre>{{ userDataContent  }}</pre> -->
-
-
+           
     <div class="mb-4 is-flex is-justify-content-center">
       <h1 class="title is-4 has-text-weight-normal"> 
       <span class="has-text-warning">  {{ userPets.length }} </span>
@@ -30,8 +27,6 @@
       </h1>
     </div>
   
-
-
     <h1 class="title is-4">Pets Disponibilizados:</h1>
 
     <div class="columns is-multiline">
@@ -51,13 +46,15 @@
 /*
 imports
 */
-import { ref, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useStorePets }from '@/stores/storePets'
 import { useStoreUserdata } from '@/stores/storeUserdata'
 import { useStoreAuth } from '../stores/storeAuth';
 import Pets from '@/components/Pets/Pets.vue';
 
+/* onMounted */
+const storePets = useStorePets();
 
 
 /*
@@ -76,12 +73,12 @@ userDataContent.value = storeUserdata.getUserContentbyId(route.params.id)
 
 /* user pets */
 
-const storePets = useStorePets();
-
-
-const userPets = storePets.getUserPets(userDataContent.value.id)
+const userPets = computed(() => {
+  storePets.getPets()
+  return storePets.getUserPets(userDataContent.value.id)
+}) 
     
-
+console.log(userPets);
 
 </script>
 

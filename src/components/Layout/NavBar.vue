@@ -57,16 +57,13 @@
 
 import { useStoreAuth } from '@/stores/storeAuth'
 import { useStoreUserdata } from '@/stores/storeUserdata'
-import { ref } from 'vue';
 import { useRouter } from 'vue-router'
-
 
 /*
   store
 */
 const storeUserdata = useStoreUserdata();
 const storeAuth = useStoreAuth();
-const currentUserId = ref('')
 
 /*
   router
