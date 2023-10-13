@@ -46,7 +46,7 @@ export const useStoreAuth = defineStore('storeAuth', {
             state: credentials.state,
             city: credentials.city,
             email: credentials.email,
-            numero: credentials.numero,
+            number: credentials.number,
             img: credentials.img,
           }
         )

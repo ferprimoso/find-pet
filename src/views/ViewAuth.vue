@@ -10,7 +10,7 @@
         <li
         :class="{ 'is-active' : register }"
         >
-        <a @click.prevent="register = true">Register</a>
+        <a @click.prevent="register = true">Cadastra-se</a>
         </li>
     </ul>
     </div>
@@ -38,7 +38,7 @@
 
         <div class="field" :class="{ 'is-hidden' : !register }"
 >
-            <label class="label">Name</label>
+            <label class="label">Nome</label>
             <div class="control">
             <input
                 v-model="credentials.name"
@@ -52,7 +52,7 @@
             <label class="label">Numero</label>
             <div class="control">
             <input
-                v-model="credentials.numero"
+                v-model="credentials.number"
                 class="input"
                 placeholder="e.g Alex smith"
             >
@@ -85,23 +85,40 @@
         </div>
 
         <div class="field">
-            <label class="label">Password</label>
+            <label class="label">Senha</label>
             <div class="control">
             <input
                 v-model="credentials.password"
                 class="input"
-                placeholder="Enter a password"
+                placeholder="Insira a senha"
                 type="password"
             >
             </div>
         </div>
 
         <div class="field is-grouped" :class="{ 'is-hidden' : !register }">
+        
         <div v-if="previewUrl">
             <img :src="previewUrl" alt="Preview" style="max-width: 300px; max-height: 300px;">
         </div>
 
-        <input type="file" @change="handleFileChange" accept="image/*">
+
+        <div class="file is-warning">
+        <label class="file-label">
+          <input class="file-input" type="file" @change="handleFileChange" accept="image/*">
+          <span class="file-cta">
+            <span class="file-icon">
+              <i class="fas fa-upload"></i>
+            </span>
+            <span class="file-label">
+              Escolha uma imagem...
+            </span>
+          </span>
+          <!-- <span class="file-name">
+          </span> -->
+        </label>
+      </div>
+
         </div>
 
         <div class="field is-grouped is-grouped-right">
@@ -116,8 +133,6 @@
     </div>
     </div>
 
-
-    <button @click="() => console.log(credentials)">a</button>
 </div>
 </template>
 
@@ -146,7 +161,7 @@ form title
 */
 
 const formTitle = computed(() => {
-    return register.value ? 'Register' : 'Login'
+    return register.value ? 'Cadastra-se' : 'Login'
 })
 
 
@@ -190,7 +205,7 @@ const credentials = reactive({
     password: '',
     state: '',
     city: '',
-    numero: '',
+    number: '',
     img: '',
 })
 

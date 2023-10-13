@@ -1,6 +1,6 @@
 <template>
     <!-- Main container -->
-<nav class="level is-flex-wrap-wrap	">
+<nav class="level is-flex-wrap-wrap	mb-2">
   <!-- Left side -->
       <div class="level-item">
           <div class="select">
@@ -50,18 +50,13 @@
            </select>
         </div>
       </div>
+</nav>
 
-  <!-- Right side -->
-    <div class="level-item ">
-      <div class="field is-flex-grow-1">
-        <p class="control">
+<div class="is-flex is-justify-content-space-between px-1 py-0 mb-4">
+        <p class="control mr-4 is-flex-grow-1">
           <input v-model="filterData.name" class="input" type="text" placeholder="Nome do animal">
         </p>
         
-      </div>
-    </div>
-
-    <div class="level-item" >
       <p class="control">
           <button class="button is-warning"
             @click="storePets.performSearch(filterData)"
@@ -69,9 +64,9 @@
             Pesquisar
           </button>
         </p>
-    </div>
+</div>
 
-</nav>
+
 </template>
 
 <script setup>

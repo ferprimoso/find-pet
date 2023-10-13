@@ -54,27 +54,41 @@
     </div>
   </div>
 
-  <div class="field is-grouped">
-      <div v-if="previewUrl">
-        <img :src="previewUrl" alt="Preview" style="max-width: 300px; max-height: 300px;">
-      </div>
 
-      <input type="file" @change="handleFileChange" accept="image/*">
+  <figure class="image is-256x256 mb-4" v-if="previewUrl">
+      <img :src="previewUrl" alt="Preview" style="max-width: 300px; max-height: 300px;">
+  </figure>
+
+  <div class="field is-grouped">
+  
+      <div class="file is-warning">
+        <label class="file-label">
+          <input class="file-input" type="file" @change="handleFileChange" accept="image/*">
+          <span class="file-cta">
+            <span class="file-icon">
+              <i class="fas fa-upload"></i>
+            </span>
+            <span class="file-label">
+              Escolha uma imagem...
+            </span>
+          </span>
+          <!-- <span class="file-name">
+          </span> -->
+        </label>
+
+      </div>
   </div>
 
-  <div class="field is-grouped">
+  <div class="field is-grouped mt-5">
     <div class="control">
-      <button class="button is-link">Submit</button>
+      <button class="button is-link">Postar</button>
     </div>
     <div class="control">
-      <button class="button is-link is-light">Cancel</button>
+      <button class="button is-link is-light">Cancelar</button>
     </div>
   </div>
 
 </form>  
-
-<button @click="getTime">Update Timestamp</button>
-
 
 </template>
 

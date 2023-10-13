@@ -11,7 +11,7 @@
 
 
           <div>
-            <h2 class="subtitle mb-0"> <i class="fa-solid fa-phone"></i> {{ userDataContent.numero }}</h2>          
+            <h2 class="subtitle mb-0"> <i class="fa-solid fa-phone"></i> {{ userDataContent.number }}</h2>          
             <h2 class="subtitle"> <i class="fa-regular fa-envelope"></i> {{ userDataContent.email }}</h2>     
           </div>
        
@@ -30,6 +30,14 @@
     <h1 class="title is-4">Pets Disponibilizados:</h1>
 
     <div class="columns is-multiline">
+
+
+      <div
+        v-if="!storePets.pets.length"
+        class="is-size-4 has-text-centered has-text-grey-light is-family-monospace py-6"
+      >
+        Nenhum animal disponibilizado
+    </div>
 
     <Pets
     v-for="(pet) in userPets"

@@ -10,7 +10,7 @@
             <!-- <button class="delete" aria-label="close"></button> -->
             </header>
             <section class="modal-card-body">
-                <span> <i class="fa-brands fa-whatsapp"></i>     {{ user.numero }}</span>
+                <span> <i class="fa-brands fa-whatsapp"></i> {{ user.number }}</span>
                 <br>
                 <span> <i class="fa-regular fa-envelope"></i> {{ user.email }}  </span>
             </section>

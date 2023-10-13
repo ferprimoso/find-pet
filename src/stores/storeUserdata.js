@@ -15,14 +15,7 @@ export const useStoreUserdata = defineStore('storeUserdata',{
   state: () => {
     return {
       userdata:
-        [
-          // id: 'id3',
-          // name: 'Luiz Fernando',
-          // city: 'Campinas',
-          // email: 'test@test.com',
-          // numero: '13 999999999',
-          // img: 'src/assets/IMG-20200327-WA0014.jpeg'
-        ],
+        [],
     }
   },
   actions: {
@@ -44,7 +37,7 @@ export const useStoreUserdata = defineStore('storeUserdata',{
             state: doc.data().state,
             city: doc.data().city,
             email: doc.data().email,
-            numero: doc.data().numero,
+            number: doc.data().number,
             img: doc.data().img,
           }
 

@@ -4,7 +4,7 @@
         to="/addPet"
         href="#"
     >
-        <button class="button has-background-warning is-large is-fullwidth mb-4">Quero divulgar um animal</button>
+        <button class="button is-warning is-large is-fullwidth mb-4">Quero divulgar um animal</button>
     </RouterLink>
 
     <SearchBar/>
@@ -25,6 +25,14 @@
          
     </div>
 
+    <div
+        v-if="!storePets.pets.length"
+        class="is-size-4 has-text-centered has-text-grey-light is-family-monospace py-6"
+      >
+        Nenhum animal encontrado...
+    </div>
+
+
     <div class="columns is-centered is-mobile mt-4">
         <vue-awesome-paginate
             :total-items="storePets.pets.length"
@@ -35,6 +43,8 @@
         />
     </div>
     
+
+
 </template>
 
 <script setup>
