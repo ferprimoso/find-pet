@@ -5,6 +5,8 @@ import ViewPets from '@/views/ViewPets.vue';
 import ViewUserPage from '@/views/ViewUserPage.vue';
 import ViewPetPage from '@/views/ViewPetPage.vue';
 import ViewAddPet from '@/views/ViewAddPet.vue';
+import ViewAdmin from '@/views/ViewAdmin.vue';
+import { useStoreUserdata } from '../stores/storeUserdata';
 
 
 const routes = [
@@ -29,6 +31,11 @@ const routes = [
     component: ViewAddPet
   },
   {
+    path: '/admin',
+    name: 'admin',
+    component: ViewAdmin
+  },
+  {
     path: '/auth',
     name: 'auth',
     component: ViewAuth
@@ -45,13 +52,13 @@ const router = createRouter({
 // navigation guards
 router.beforeEach(async (to, from) => {
   const storeAuth = useStoreAuth()
-  if (!storeAuth.user.id && to.name !== 'auth') {
-    return { name: 'auth' }
-  }
+  const storeUserdata = useStoreUserdata()
   if (storeAuth.user.id && to.name === 'auth') {
     return false
   }
+  if (!storeUserdata.getAdminbyEmail(storeAuth.user.email) && to.name === 'admin') {
+    return false
+  }
 })
-
 
 export default router;

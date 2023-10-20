@@ -43,11 +43,24 @@
                     <strong>Meu perfil</strong>
                 </a>
                 <a class="button is-light"
+                    v-if="!storeAuth.user.id"
+                    @click="login"
+                >
+                    Login
+                </a>
+                <a class="button is-light"
+                    v-if="isAdminComputed"
+                    @click="goToAdmin"
+                >
+                    Admin Dashboard
+                </a>
+                <a class="button is-light"
                     v-if="storeAuth.user.id"
                     @click="logout"
                 >
                     Sair
                 </a>
+
                 </div>
             </div>
             </div>
@@ -73,7 +86,7 @@
 
 <script setup>
 
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useStoreAuth } from '@/stores/storeAuth'
 import { useStoreUserdata } from '@/stores/storeUserdata'
 import { useRouter } from 'vue-router'
@@ -101,6 +114,17 @@ const goToProfile = () => {
     router.push(`/userPage/${userId}`)
   }
 
+
+/*
+  login
+*/
+
+const login = () => {
+    showMobileNav.value = false
+    router.push(`/auth`)
+  }
+
+
 /*
   logout
 */
@@ -108,6 +132,7 @@ const goToProfile = () => {
 const logout = () => {
     showMobileNav.value = false
     storeAuth.logoutUser()
+    router.push('/')
   }
 
 /*
@@ -129,6 +154,20 @@ const logout = () => {
     ignore: [navbarBurgerRef]
   })
 
+/*
+  admin dashboard
+*/
+const isAdminComputed = computed(() => {
+  return storeUserdata.getAdminbyEmail(storeAuth.user.email)
+
+})
+
+const goToAdmin = () => {
+    showMobileNav.value = false
+    router.push(`/admin`)
+  }
+
+    
 
 </script>
 

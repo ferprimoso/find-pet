@@ -39,6 +39,7 @@ export const useStoreUserdata = defineStore('storeUserdata',{
             email: doc.data().email,
             number: doc.data().number,
             img: doc.data().img,
+            admin: doc.data().admin
           }
 
           userdata.push(user)
@@ -53,7 +54,6 @@ export const useStoreUserdata = defineStore('storeUserdata',{
   getters: {
     getUserContent: (state) => {
       return (email) => {
-        console.log(email)
         return state.userdata.filter(user => user.email === email)[0]
       }
     },
@@ -66,7 +66,17 @@ export const useStoreUserdata = defineStore('storeUserdata',{
       return (email) => {
         return state.userdata.filter(user => user.email === email)[0].id
       }
-    }
+    },
+    getAdminbyEmail: (state) =>{
+      return (email) => {
+        if ( email ){
+          return state.userdata.filter(user => user.email === email)[0].admin
+        } else {
+          return false
+        }
+      }
+    } 
+
   }
 })
 

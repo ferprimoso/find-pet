@@ -6,10 +6,11 @@
         <RouterView/>
     </div>
 
-    
 </template>
 
 <script setup>
+import { useStorePets }from '@/stores/storePets'
+import { useStoreUserdata } from '@/stores/storeUserdata'
 import { onMounted } from 'vue';
 import NavBar from '@/components/Layout/NavBar.vue'
 import { useStoreAuth } from '@/stores/storeAuth'
@@ -19,8 +20,9 @@ import { useStoreAuth } from '@/stores/storeAuth'
 /*
   store
 */
-
-  const storeAuth = useStoreAuth()
+const storePets = useStorePets()
+const storeUserdata = useStoreUserdata()
+const storeAuth = useStoreAuth()
 
 /*
   mounted
@@ -28,6 +30,8 @@ import { useStoreAuth } from '@/stores/storeAuth'
 
   onMounted(() => {
     storeAuth.init()
+    storePets.init()
+    storeUserdata.init()
   })
 
 

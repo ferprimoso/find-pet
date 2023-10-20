@@ -1,7 +1,7 @@
 <template>
 
     <RouterLink
-        to="/addPet"
+        :to="!storeAuth.user.id ? '/auth' : '/addPet'"
         href="#"
     >
         <button class="button is-warning is-large is-fullwidth mb-4">Quero divulgar um animal</button>
@@ -53,12 +53,14 @@
 imports
 */
 
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import Pets from '@/components/Pets/Pets.vue';
 import SearchBar from '@/components/Layout/SearchBar.vue';
+import { useStoreAuth } from '@/stores/storeAuth'
 import { useStorePets }from '@/stores/storePets'
 
 const storePets = useStorePets();
+const storeAuth = useStoreAuth();
 
 /* pagination logic */
 
@@ -76,13 +78,15 @@ const paginatedPets = computed(() => {
       return storePets.pets.slice(startIndex, endIndex);
     });
 
-// /* unMounted */
+/* isLogged */
 
-// onUnmounted(() => {
-//   storePets.getPets();
-//   console.log('hi');
-// })
+const isLogged = false;
 
+/* on mounted */
+
+onMounted(() => {
+  storePets.getPets()
+})
 
 </script>
 

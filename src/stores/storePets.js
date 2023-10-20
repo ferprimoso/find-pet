@@ -31,7 +31,12 @@ export const useStorePets = defineStore('storePets',{
 
       if (getPetsSnapshot) getPetsSnapshot() // unsubscribe from any active listener
 
-      getPetsSnapshot = onSnapshot(petCollectionQuery, (querySnapshot) => {
+      let q = petCollectionQuery
+      q = query(q, where("aproved", "==", true));
+
+      
+
+      getPetsSnapshot = onSnapshot(q, (querySnapshot) => {
         let pets = []
         querySnapshot.forEach((doc) => {
           let pet = doc.data();
@@ -43,6 +48,21 @@ export const useStorePets = defineStore('storePets',{
       }, error => {
         console.log('error.message: ', error.message)
       })
+    },
+    async getUnapproved() {
+      let q = petCollectionRef
+      q = query(q, where("aproved", "==", false));
+
+
+      const querySnapshot = await getDocs(q);
+      this.pets = []
+      querySnapshot.forEach((doc) => {
+        let pet = doc.data()
+        pet.id = doc.id
+        this.pets.push(pet)
+      });
+      this.petsLoaded = true
+
     },
     async addPet(newPetContent) {
       await addDoc(petCollectionRef, newPetContent)
@@ -115,7 +135,7 @@ export const useStorePets = defineStore('storePets',{
       return (ownerId) => {
         return state.pets.filter(pet => pet.ownerId === ownerId)
       }
-    }
+    },
   }
 })
 

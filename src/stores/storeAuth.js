@@ -23,11 +23,11 @@ export const useStoreAuth = defineStore('storeAuth', {
           this.user.id = user.uid
           this.user.email = user.email
           this.router.push('/')
-          storePets.init()
-          storeUserdata.init()
+          // storePets.init()
+          // storeUserdata.init()
         } else {
           this.user = {}
-          this.router.replace('/auth')
+          // this.router.replace('/auth')
           // storeNotes.clearNotes()
         }
       })
@@ -48,6 +48,7 @@ export const useStoreAuth = defineStore('storeAuth', {
             email: credentials.email,
             number: credentials.number,
             img: credentials.img,
+            admin: false,
           }
         )
       }).catch((error) => {
@@ -56,7 +57,7 @@ export const useStoreAuth = defineStore('storeAuth', {
 
     },
     loginUser(credentials) {
-      signInWithEmailAndPassword(auth, credentials.email, credentials.password).then((userCredential) => {
+      signInWithEmailAndPassword(auth, credentials.email, credentials.password, credentials.admin ).then((userCredential) => {
         const user = userCredential.user
         // console.log('user: ', user)
       }).catch((error) => {

@@ -10,7 +10,7 @@
         <li
         :class="{ 'is-active' : register }"
         >
-        <a @click.prevent="register = true">Cadastra-se</a>
+        <a @click.prevent="register = true">Cadastre-se</a>
         </li>
     </ul>
     </div>
@@ -161,7 +161,7 @@ form title
 */
 
 const formTitle = computed(() => {
-    return register.value ? 'Cadastra-se' : 'Login'
+    return register.value ? 'Cadastre-se' : 'Login'
 })
 
 

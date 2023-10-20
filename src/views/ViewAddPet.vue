@@ -128,7 +128,8 @@ const petData = reactive({
     cidade: '',
     img: '',
     descricao: '',
-    adopted: false
+    adopted: false,
+    aproved: false
   })
 
 const onSubmit = () => {
