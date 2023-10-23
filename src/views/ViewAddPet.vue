@@ -125,7 +125,7 @@ const petData = reactive({
     especie: 'Cachorro',
     porte: 'pequeno',
     state: '',
-    cidade: '',
+    city: '',
     img: '',
     descricao: '',
     adopted: false,
@@ -147,7 +147,7 @@ const onSubmit = () => {
       petData.date = new Date()
       petData.img = url
       petData.ownerId = storeUserdata.getUserIdbyEmail(storeAuth.getAuthEmail)
-      petData.cidade = storeUserdata.getUserContent(storeAuth.getAuthEmail).city
+      petData.city = storeUserdata.getUserContent(storeAuth.getAuthEmail).city
       petData.state = storeUserdata.getUserContent(storeAuth.getAuthEmail).state
       storePets.addPet(petData)
       router.push('/')

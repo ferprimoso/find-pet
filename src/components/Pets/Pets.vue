@@ -20,7 +20,7 @@
       <div class="media">
         <div class="media-content">
           <p class="title is-4 has-text-warning has-text-weight-bold">{{ pet.name }}</p>
-          <p class="subtitle is-6">{{ pet.cidade }}, {{ pet.state }}</p>
+          <p class="subtitle is-6">{{ pet.city }}, {{ pet.state }}</p>
         </div>
       </div>
     </div>

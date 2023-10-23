@@ -25,12 +25,19 @@
     </div>
 
     <Pets
+    @click.prevent="console.log('hi')"
     v-for="(pet) in unapprovedPets"
     :key="pet.id"
     :pet="pet"
     />
 
     </div>
+
+    <ModalApprovePet
+              v-if="modals.approve"
+              v-model="modals.approve"
+              :pet="petContent"
+    />
 
 </template>
 
@@ -39,12 +46,14 @@
 /*
 imports
 */
-import { ref, computed } from 'vue'
+import { reactive, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStorePets }from '@/stores/storePets'
 import { useStoreUserdata } from '@/stores/storeUserdata'
 import { useStoreAuth } from '../stores/storeAuth';
 import Pets from '@/components/Pets/Pets.vue';
+import ModalApprovePet from '@/components/Pets/ModalApprovePet.vue'
+
 
 /* onMounted */
 const storePets = useStorePets();
@@ -70,6 +79,16 @@ const unapprovedPets = computed(() => {
     
 console.log(unapprovedPets);
     
+/* modals */
+
+
+const modals = reactive({
+  approve: false
+})
+
+
+
+
 </script>
 
 <style>

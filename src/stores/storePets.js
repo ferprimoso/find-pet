@@ -90,8 +90,8 @@ export const useStorePets = defineStore('storePets',{
       q = query(q, where("state", "==", filterObj.state.nome));
     }
 
-    if (filterObj.cidade) {
-      q = query(q, where("cidade", "==", filterObj.cidade));
+    if (filterObj.city) {
+      q = query(q, where("city", "==", filterObj.city));
     }
 
     if (filterObj.name) {
