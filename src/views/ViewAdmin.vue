@@ -1,5 +1,8 @@
 <template>
 
+    <BackButton class="mb-4"/>
+
+
     <div class="box is-flex is-justify-content-space-around is-justify-content-center	">
 
         <div class="is-flex is-flex-direction-column is-align-content-center is-justify-content-space-around	">
@@ -21,7 +24,7 @@
         v-if="!storePets.pets.length"
         class="is-size-4 has-text-centered has-text-grey-light is-family-monospace py-6"
       >
-        Nenhum animal disponibilizado
+        Nenhum animal pendente de aprovação...
     </div>
 
     <Pets
@@ -32,13 +35,7 @@
     />
 
     </div>
-
-    <ModalApprovePet
-              v-if="modals.approve"
-              v-model="modals.approve"
-              :pet="petContent"
-    />
-
+    
 </template>
 
 <script setup>
@@ -52,7 +49,7 @@ import { useStorePets }from '@/stores/storePets'
 import { useStoreUserdata } from '@/stores/storeUserdata'
 import { useStoreAuth } from '../stores/storeAuth';
 import Pets from '@/components/Pets/Pets.vue';
-import ModalApprovePet from '@/components/Pets/ModalApprovePet.vue'
+import BackButton from '@/components/Layout/BackButton.vue'
 
 
 /* onMounted */
@@ -79,14 +76,6 @@ const unapprovedPets = computed(() => {
     
 console.log(unapprovedPets);
     
-/* modals */
-
-
-const modals = reactive({
-  approve: false
-})
-
-
 
 
 </script>

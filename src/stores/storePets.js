@@ -29,25 +29,19 @@ export const useStorePets = defineStore('storePets',{
     async getPets() {
       this.petsLoaded = false
 
-      if (getPetsSnapshot) getPetsSnapshot() // unsubscribe from any active listener
-
-      let q = petCollectionQuery
+      let q = petCollectionRef
       q = query(q, where("aproved", "==", true));
 
-      
 
-      getPetsSnapshot = onSnapshot(q, (querySnapshot) => {
-        let pets = []
-        querySnapshot.forEach((doc) => {
-          let pet = doc.data();
-          pet.id = doc.id
-          pets.push(pet)
-        })
-        this.pets = pets
-        this.petsLoaded = true
-      }, error => {
-        console.log('error.message: ', error.message)
-      })
+      const querySnapshot = await getDocs(q);
+      this.pets = []
+      querySnapshot.forEach((doc) => {
+        let pet = doc.data()
+        pet.id = doc.id
+        this.pets.push(pet)
+      });
+      this.petsLoaded = true
+      
     },
     async getUnapproved() {
       let q = petCollectionRef
@@ -72,6 +66,7 @@ export const useStorePets = defineStore('storePets',{
     this.petsLoaded = false
 
     let q = petCollectionRef
+    q = query(q, where("aproved", "==", true));
 
 
     if (filterObj.especie) {
@@ -111,6 +106,15 @@ export const useStorePets = defineStore('storePets',{
     async deletePet(petId) {
       await deleteDoc(doc(petCollectionRef, petId))
     },
+    async approvePet(petId) {
+      const petRef = doc(petCollectionRef, petId)
+
+      await updateDoc(petRef, {
+        aproved: true
+      });
+
+    },
+
     async adoptPet(petId) {
       const petRef = doc(petCollectionRef, petId)
       const petSnapshot = await getDoc(petRef);

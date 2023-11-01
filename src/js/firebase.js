@@ -1,8 +1,8 @@
 import { initializeApp } from 'firebase/app'
-import { getFirestore } from 'firebase/firestore'
-import { getAuth } from 'firebase/auth'
+import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
+import { connectAuthEmulator, getAuth } from 'firebase/auth'
+import { getStorage, connectStorageEmulator } from "firebase/storage"
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyB6kXthWVVMKRxiU-uoKNzSPLSvEnh9YUI",
   authDomain: "find-pet-23603.firebaseapp.com",
@@ -12,12 +12,36 @@ const firebaseConfig = {
   appId: "1:311761539971:web:15d1d0bc376835abb65cb6"
 };
 
+
+// const firebaseConfig = {
+//   apiKey: '...',
+//   authDomain: '...',
+//   projectId: 'find-pet-23603',
+//   storageBucket: "localhost:9199",
+// }
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
-const db = getFirestore(app)
-const auth = getAuth(app)
+
+const db = getFirestore()
+const auth = getAuth()
+const storage = getStorage();
+
+
+
+// if (location.hostname === 'localhost') {
+//   connectFirestoreEmulator(db, '127.0.0.1', 8080)
+//   connectStorageEmulator(storage, '127.0.0.1', 9199);
+//   connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true })
+// }
+
+// console.log('db', db);
+
+
+
 
 export {
   db,
-  auth
+  auth,
+  storage
 }

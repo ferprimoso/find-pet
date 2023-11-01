@@ -15,7 +15,7 @@
                 <span> <i class="fa-regular fa-envelope"></i> {{ pet.name }}  </span>
             </section> -->
             <footer class="modal-card-foot">
-              <button class="button is-warning" @click="deleteAndCloseModal">Aprovar</button>
+              <button class="button is-warning" @click="approveAndCloseModal">Aprovar</button>
             <button class="button is-warning" @click="deleteAndCloseModal">Excluir</button>
             <button class="button is-warning" @click="closeModal">Cancelar</button>
             </footer>
@@ -80,6 +80,18 @@ const storePets = useStorePets();
   const closeModal = () => {
     emit('update:modelValue', false)
   }
+
+
+/*
+  approve and close modal
+*/ 
+
+ const approveAndCloseModal = () => {
+  storePets.approvePet(props.pet.id)
+  storePets.init()
+  closeModal()
+  router.push('/')
+ }
 
 /*
   delete and close modal

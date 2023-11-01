@@ -141,7 +141,9 @@
 import brazilCityStates from '@/js/citystate.json'
 import { ref, computed, reactive } from 'vue'
 import { useStoreAuth } from '@/stores/storeAuth'
-import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from '@/js/firebase'
+import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+
 
 
 /*
@@ -167,7 +169,6 @@ const formTitle = computed(() => {
 
 /* storage image */
 
-const storage = getStorage();
 let storageReference = null;
 let file = null;
 

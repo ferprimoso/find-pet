@@ -1,5 +1,7 @@
 <template>
 
+    <BackButton/>
+
     <div class="columns">
       <div class="column m-4">
         <div class="image is-4by5 is-relative">
@@ -25,7 +27,7 @@
             <h1 class="has-text-warning mb-0">{{ petContent.name }}</h1>
             <span class="subtitle " >{{ petContent.especie }} / {{ petContent.sexo }} / porte {{ petContent.porte }} </span>
             <br>
-            <i class="fa-solid fa-location-dot"></i> <span>{{ petContent.cidade }} - {{ petContent.state }} </span>
+            <i class="fa-solid fa-location-dot"></i> <span>{{ petContent.city }} - {{ petContent.state }} </span>
             <br>
             <p>Disponibilizado por
               <RouterLink
@@ -43,34 +45,60 @@
             <p >{{ petContent.descricao }}</p>
 
             
-
-            <button class="button is-large is-fullwidth is-warning has-text-white has-text-weight-bold"
-                @click.prevent="modals.contact = true"
-                href="#"
-                v-if="!isPetOwner"
-            >Quero Adotar</button>
-
-            <button class="button is-large is-fullwidth is-link has-text-white has-text-weight-bold mb-4"
-                href="#"
-                v-if="isPetOwner"
-                @click.prevent="modals.adopted = true"
+            <div
+              v-if="!isAdmin"
             >
-            <span v-if="!petContent.adopted">
-              Sinalizar como adotado
-            </span>
-            <span v-if="petContent.adopted">
-              Sinalizar como para adoção
-            </span>
-            
-            
-            </button>
+              <button class="button is-large is-fullwidth is-warning has-text-white has-text-weight-bold"
+                  @click.prevent="modals.contact = true"
+                  href="#"
+                  v-if="!isPetOwner"
+              >Quero Adotar</button>
 
-            <button class="button is-large is-fullwidth is-danger has-text-white has-text-weight-bold"
-                href="#"
-                v-if="isPetOwner"
-                @click.prevent="modals.delete = true"
-            >Excluir Pet</button>
+              <button class="button is-large is-fullwidth is-link has-text-white has-text-weight-bold mb-4"
+                  href="#"
+                  v-if="isPetOwner"
+                  @click.prevent="modals.adopted = true"
+              >
+              <span v-if="!petContent.adopted">
+                Sinalizar como adotado
+              </span>
+              <span v-if="petContent.adopted">
+                Sinalizar como para adoção
+              </span>
+              
+              
+              </button>
 
+            
+              <button class="button is-large is-fullwidth is-danger has-text-white has-text-weight-bold"
+                  href="#"
+                  v-if="isPetOwner"
+                  @click.prevent="modals.delete = true"
+              >Excluir Pet</button>
+
+            </div>
+
+            <div 
+              v-if="isAdmin"
+            >
+              <button class="button is-large is-fullwidth is-warning has-text-white has-text-weight-bold mb-4"
+                  href="#"
+                  v-if="isPetNotApproved"
+                  @click.prevent="modals.approve = true"
+              >Aprovar Pet</button>
+
+
+              <button class="button is-large is-fullwidth is-danger has-text-white has-text-weight-bold"
+                  href="#"
+                  @click.prevent="modals.delete = true"
+              >Excluir Pet</button>
+
+
+
+
+
+            </div>
+            
 
         </div>
     </div>
@@ -93,6 +121,13 @@
             :pet="petContent"
     />
 
+    <ModalApprovePet
+              v-if="modals.approve"
+              v-model="modals.approve"
+              :pet="petContent"
+    />
+
+
 </template>
 
 <script setup>
@@ -108,6 +143,8 @@ import { useStoreAuth } from '@/stores/storeAuth'
 import ModalContact from '@/components/Pets/ModalContact.vue'
 import ModalDeletePet from '@/components/Pets/ModalDeletePet.vue'
 import ModalAdopted from '../components/Pets/ModalAdopted.vue'
+import ModalApprovePet from '@/components/Pets/ModalApprovePet.vue'
+import BackButton from '@/components/Layout/BackButton.vue'
 
 /*
   router
@@ -158,13 +195,34 @@ const formattedDate = `${day}/${month}/${year}`;
 const modals = reactive({
     contact: false,
     delete: false,
-    adopted: false
+    adopted: false,
+    approve: false
   })
 
 /* is current user pet */
 
 const isPetOwner = computed(() => {
   if ( userContent.value.email === storeAuth.getAuthEmail) {
+    return true
+  } else {
+    return false
+  }
+})
+
+/* is current admin  */
+
+const isAdmin = computed(() => {
+  if ( storeUserdata.getAdminbyEmail(storeAuth.user.email) ) {
+    return true
+  } else {
+    return false
+  }
+})
+
+/* is pet not approved */
+
+const isPetNotApproved = computed(() => {
+  if ( petContent.value.aproved === false ) {
     return true
   } else {
     return false

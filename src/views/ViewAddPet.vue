@@ -99,7 +99,8 @@ import { ref, reactive } from 'vue';
 import { useStorePets }from '@/stores/storePets'
 import { useStoreAuth }from '@/stores/storeAuth'
 import { useStoreUserdata } from '@/stores/storeUserdata'
-import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from '@/js/firebase'
+import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useRouter } from 'vue-router'
 
 
@@ -107,8 +108,7 @@ const router = useRouter()
 
 /* storage image */
 
-const storage = getStorage();
-let storageReference = null;
+  let storageReference = null;
 let file = null;
 
 /* form submit */

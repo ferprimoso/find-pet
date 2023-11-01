@@ -1,4 +1,5 @@
 <template>
+    <BackButton class="mb-4"/>
 
     <div class="box is-flex is-justify-content-space-around is-justify-content-center	">
       <div class="profile-picture">
@@ -60,6 +61,7 @@ import { useStorePets }from '@/stores/storePets'
 import { useStoreUserdata } from '@/stores/storeUserdata'
 import { useStoreAuth } from '../stores/storeAuth';
 import Pets from '@/components/Pets/Pets.vue';
+import BackButton from '@/components/Layout/BackButton.vue'
 
 /* onMounted */
 const storePets = useStorePets();
