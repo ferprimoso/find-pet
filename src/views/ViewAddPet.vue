@@ -100,7 +100,7 @@ import { useStorePets }from '@/stores/storePets'
 import { useStoreAuth }from '@/stores/storeAuth'
 import { useStoreUserdata } from '@/stores/storeUserdata'
 import { storage } from '@/js/firebase'
-import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref as storageRef, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { useRouter } from 'vue-router'
 
 
@@ -108,7 +108,7 @@ const router = useRouter()
 
 /* storage image */
 
-  let storageReference = null;
+// let storageReference = null;
 let file = null;
 
 /* form submit */
@@ -118,7 +118,6 @@ const storePets = useStorePets();
 
 const petData = reactive({
     ownerId: '',
-    // id: '11',
     name: '',
     date: '',
     sexo: 'Macho',
@@ -132,36 +131,39 @@ const petData = reactive({
     aproved: false
   })
 
-const onSubmit = () => {
-  storageReference = storageRef(storage, `images/${file.name}`);
+const setProgresspercent = ref(0);
 
-  uploadBytes(storageReference, file).then((snapshot) => {
-    console.log(file);
-    console.log('Uploaded a blob or file!');
-  })
-  .then(
-    getDownloadURL(storageReference)
-    .then((url) => {
-      // `url` is the download URL for 'images/stars.jpg'
-      // Or inserted into an <img> element
-      petData.date = new Date()
-      petData.img = url
-      petData.ownerId = storeUserdata.getUserIdbyEmail(storeAuth.getAuthEmail)
-      petData.city = storeUserdata.getUserContent(storeAuth.getAuthEmail).city
-      petData.state = storeUserdata.getUserContent(storeAuth.getAuthEmail).state
-      storePets.addPet(petData)
-      router.push('/')
-    })
-    .catch((error) => {
-      // Handle any errors
-    }),
+const onSubmit = (e) => {
+  e.preventDefault()
 
-    console.log(petData),
-  )
-  
+    if (!file) return;
+
+    const storageReference = storageRef(storage, `images/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageReference, file);
+
+    uploadTask.on("state_changed",
+      (snapshot) => {
+        const progress =
+          Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+        setProgresspercent.value = progress;
+        console.log(setProgresspercent);
+      },
+      (error) => {
+        alert(error);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          petData.date = new Date()
+          petData.img = downloadURL
+          petData.ownerId = storeUserdata.getUserIdbyEmail(storeAuth.getAuthEmail)
+          petData.city = storeUserdata.getUserContent(storeAuth.getAuthEmail).city
+          petData.state = storeUserdata.getUserContent(storeAuth.getAuthEmail).state
+          storePets.addPet(petData)
+          router.push('/')
+        });
+      }
+    );
 }
-
-/* file selected */
 
 const previewUrl = ref(null)
 

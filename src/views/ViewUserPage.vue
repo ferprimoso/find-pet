@@ -88,8 +88,6 @@ const userPets = computed(() => {
   return storePets.getUserPets(userDataContent.value.id)
 }) 
     
-console.log(userPets);
-
 </script>
 
 <style>

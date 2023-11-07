@@ -4,15 +4,13 @@
 </template>
 
 <script setup>
-import { useRoute, useRouter } from 'vue-router'
+
+import { useRouter } from 'vue-router'
 const router = useRouter()
 
-
 const goBack = () => {
-    console.log(1)
     router.back()
 }
-
 
 </script>
 

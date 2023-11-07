@@ -229,24 +229,7 @@ const isPetNotApproved = computed(() => {
   }
 })
 
-
-  
-
-// })
-console.log(userContent.value.email);
-console.log(storeAuth.getAuthEmail);
-
-
 </script>
-
-
-
-
-
-
-
-
-
 
 <style>
 .image-container {

@@ -30,7 +30,6 @@ export const useStoreUserdata = defineStore('storeUserdata',{
       let userdata = []
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
           let user = {
             id: doc.id,
             name: doc.data().name,
@@ -68,13 +67,17 @@ export const useStoreUserdata = defineStore('storeUserdata',{
       }
     },
     getAdminbyEmail: (state) =>{
-      return (email) => {
-        if ( email ){
-          return state.userdata.filter(user => user.email === email)[0].admin
-        } else {
-          return false
+        return (email) => {
+          if ( email ){
+            try {
+              return state.userdata.filter(user => user.email === email)[0].admin
+            } catch {
+              
+            }
+          } else {
+            return false
+          }
         }
-      }
     } 
 
   }
