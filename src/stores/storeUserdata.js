@@ -1,16 +1,13 @@
 import { defineStore } from 'pinia'
 import { 
-  collection, onSnapshot,
-  doc, deleteDoc, updateDoc, addDoc, getDoc, getDocs,
-  query, orderBy, where 
+  collection, addDoc, getDocs,
+  query  
 } from 'firebase/firestore'
 import { db } from '@/js/firebase'
 
 let userdataCollectionRef = collection(db, 'users')
 let currentUserQuery 
  
-let getuserdataSnapshot = null
-
 export const useStoreUserdata = defineStore('storeUserdata',{
   state: () => {
     return {

@@ -6,7 +6,7 @@
   <div class="field">
     <label class="label">Nome</label>
     <div class="control">
-      <input v-model="petData.name" class="input" type="text" placeholder="Digite o nome do animal">
+      <input v-model="petData.name" class="input" type="text" placeholder="Digite o nome do animal" required>
     </div>
   </div>
 
@@ -50,7 +50,7 @@
   <div class="field">
     <label class="label">Descrição</label>
     <div class="control">
-      <textarea class="textarea" placeholder="Descreva o pet" v-model="petData.descricao"></textarea>
+      <textarea class="textarea" placeholder="Descreva o pet" v-model="petData.descricao" required></textarea>
     </div>
   </div>
 
@@ -58,6 +58,7 @@
   <figure class="image is-256x256 mb-4" v-if="previewUrl">
       <img :src="previewUrl" alt="Preview" style="max-width: 300px; max-height: 300px;">
   </figure>
+
 
   <div class="field is-grouped">
   
@@ -79,14 +80,18 @@
       </div>
   </div>
 
+
+
   <div class="field is-grouped mt-5">
     <div class="control">
-      <button class="button is-link">Postar</button>
+      <button class="button is-link" type="submit">Postar</button>
     </div>
     <div class="control">
       <button class="button is-link is-light">Cancelar</button>
     </div>
   </div>
+
+  <p v-if="error.active" class="subtitle is-5 has-text-danger">{{ error.errorList[0] }}</p>
 
 </form>  
 
@@ -136,7 +141,12 @@ const setProgresspercent = ref(0);
 const onSubmit = (e) => {
   e.preventDefault()
 
-    if (!file) return;
+    if (!file) {
+      error.active = true
+      error.errorList.push('Porfavor selecione uma imagem.')
+      return;
+    }
+
 
     const storageReference = storageRef(storage, `images/${file.name}`);
     const uploadTask = uploadBytesResumable(storageReference, file);
@@ -146,7 +156,6 @@ const onSubmit = (e) => {
         const progress =
           Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
         setProgresspercent.value = progress;
-        console.log(setProgresspercent);
       },
       (error) => {
         alert(error);
@@ -160,6 +169,7 @@ const onSubmit = (e) => {
           petData.state = storeUserdata.getUserContent(storeAuth.getAuthEmail).state
           storePets.addPet(petData)
           router.push('/')
+          alert('Pet cadastrado, aguardando aprovação do administrador')
         });
       }
     );
@@ -181,5 +191,13 @@ const previewImage = (file) => {
   };
   reader.readAsDataURL(file);
 };
+
+//* error handling *//
+
+const error = reactive({
+  active: false,
+  errorList: []
+})
+
 
 </script>

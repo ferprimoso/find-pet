@@ -28,7 +28,7 @@
     </div>
 
     <Pets
-    @click.prevent="console.log('hi')"
+    @click.prevent=""
     v-for="(pet) in unapprovedPets"
     :key="pet.id"
     :pet="pet"
@@ -47,7 +47,6 @@ import { reactive, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStorePets }from '@/stores/storePets'
 import { useStoreUserdata } from '@/stores/storeUserdata'
-import { useStoreAuth } from '../stores/storeAuth';
 import Pets from '@/components/Pets/Pets.vue';
 import BackButton from '@/components/Layout/BackButton.vue'
 
@@ -73,16 +72,5 @@ const unapprovedPets = computed(() => {
     storePets.getUnapproved()
     return storePets.pets
 }) 
-    
-console.log(unapprovedPets);
-    
-
-
 </script>
 
-<style>
-
-
-
-
-</style>

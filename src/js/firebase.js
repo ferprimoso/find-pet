@@ -12,33 +12,29 @@ const firebaseConfig = {
   appId: "1:311761539971:web:15d1d0bc376835abb65cb6"
 };
 
-
+// TESTING SERVER CONFIG -------------
 // const firebaseConfig = {
 //   apiKey: '...',
 //   authDomain: '...',
 //   projectId: 'find-pet-23603',
 //   storageBucket: "localhost:9199",
 // }
+// -----------------------------------
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
-
 const db = getFirestore()
 const auth = getAuth()
 const storage = getStorage();
 
-
-
+// TESTING SERVER CONFIG --------------------------------------------------------
 // if (location.hostname === 'localhost') {
 //   connectFirestoreEmulator(db, '127.0.0.1', 8080)
 //   connectStorageEmulator(storage, '127.0.0.1', 9199);
 //   connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true })
 // }
-
 // console.log('db', db);
-
-
-
+// ------------------------------------------------------------------------------
 
 export {
   db,

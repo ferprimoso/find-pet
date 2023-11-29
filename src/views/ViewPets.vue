@@ -39,7 +39,6 @@
             :items-per-page="6"
             :max-pages-shown="5"
             v-model="currentPage"
-            :on-click="onClickHandler"
         />
     </div>
     
@@ -63,10 +62,6 @@ const storePets = useStorePets();
 const storeAuth = useStoreAuth();
 
 /* pagination logic */
-
-const onClickHandler = (page) => {
-    console.log(page);
-  };
 
 const petsPerPage = 6;
 const currentPage = ref(1);

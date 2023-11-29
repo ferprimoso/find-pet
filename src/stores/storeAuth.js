@@ -1,9 +1,6 @@
-import { useStorePets }from '@/stores/storePets'
 import { useStoreUserdata } from '@/stores/storeUserdata'
 import { defineStore } from 'pinia'
-import { doc, setDoc } from "firebase/firestore"; 
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth'
-import { db } from '@/js/firebase'
 import { auth } from '@/js/firebase'
 
 export const useStoreAuth = defineStore('storeAuth', {
@@ -14,7 +11,6 @@ export const useStoreAuth = defineStore('storeAuth', {
   },
   actions: {
     init() {
-      const storePets = useStorePets()
       const storeUserdata = useStoreUserdata()
 
 
@@ -22,22 +18,16 @@ export const useStoreAuth = defineStore('storeAuth', {
         if (user) {
           this.user.id = user.uid
           this.user.email = user.email
+          storeUserdata.init()
           this.router.push('/')
-          // storePets.init()
-          // storeUserdata.init()
         } else {
           this.user = {}
-          // this.router.replace('/auth')
-          // storeNotes.clearNotes()
         }
       })
     },
     registerUser(credentials) {
        createUserWithEmailAndPassword(auth, credentials.email, credentials.password).then((userCredential) => {
         const user = userCredential.user
-        // console.log('user: ', user)
-
-        console.log(credentials)
         
         const storeUserdata = useStoreUserdata()
         storeUserdata.addUserdata(
@@ -51,6 +41,7 @@ export const useStoreAuth = defineStore('storeAuth', {
             admin: false,
           }
         )
+
       }).catch((error) => {
         // console.log('error.message: ', error.message)
       })
@@ -59,15 +50,12 @@ export const useStoreAuth = defineStore('storeAuth', {
     loginUser(credentials) {
       signInWithEmailAndPassword(auth, credentials.email, credentials.password, credentials.admin ).then((userCredential) => {
         const user = userCredential.user
-        // console.log('user: ', user)
       }).catch((error) => {
-        // console.log('error.message: ', error.message)
+        alert('Email ou senha invalido')
       })
     },
     logoutUser() {
       signOut(auth).then(() => {
-        
-        // console.log('User signed out')
       }).catch((error) => {
         // console.log(error.message)
       })

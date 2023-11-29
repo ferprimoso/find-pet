@@ -32,8 +32,10 @@
                 class="input"
                 placeholder="e.g. alexsmith@gmail.com"
                 type="email"
+                required
             >
             </div>
+            <!-- <span class="has-text-danger" v-if="!usernameValid">Please enter your username.</span> -->
         </div>
 
         <div class="field" :class="{ 'is-hidden' : !register }"
@@ -44,6 +46,7 @@
                 v-model="credentials.name"
                 class="input"
                 placeholder="e.g Alex smith"
+                
             >
             </div>
         </div>
@@ -55,6 +58,7 @@
                 v-model="credentials.number"
                 class="input"
                 placeholder="e.g Alex smith"
+                
             >
             </div>
         </div>
@@ -92,6 +96,7 @@
                 class="input"
                 placeholder="Insira a senha"
                 type="password"
+                autocomplete="off"
             >
             </div>
         </div>
@@ -130,6 +135,9 @@
         </div>
         </form>
 
+        <p v-if="error.active" class="subtitle is-5 has-text-danger">{{ error.errorList[0] }}</p>
+
+
     </div>
     </div>
 
@@ -142,7 +150,7 @@ import brazilCityStates from '@/js/citystate.json'
 import { ref, computed, reactive } from 'vue'
 import { useStoreAuth } from '@/stores/storeAuth'
 import { storage } from '@/js/firebase'
-import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref as storageRef, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
 
 
@@ -169,7 +177,6 @@ const formTitle = computed(() => {
 
 /* storage image */
 
-let storageReference = null;
 let file = null;
 
 /* file selected */
@@ -216,35 +223,49 @@ submit
 
 const onSubmit = () => {
     if (!credentials.email || !credentials.password) {
-    alert('Please enter an email and password!')
+    alert('Por favor insira todos os dados!')
     }
     else {
-    if (register.value) {
-        storageReference = storageRef(storage, `images/${file.name}`);
+        if (register.value) {
+            if (!file) {
+                error.active = true
+                error.errorList.push('Porfavor selecione uma imagem.')
+                alert('Porfavor selecione uma imagem')
+                return;
+            }
 
-        uploadBytes(storageReference, file).then((snapshot) => {
-            console.log(file);
-            console.log('Uploaded a blob or file!');
-        })
-        .then(
-            getDownloadURL(storageReference)
-            .then((url) => {
-            // `url` is the download URL for 'images/stars.jpg'
-            // Or inserted into an <img> element
-            credentials.state = selectedState.value.nome
-            credentials.img = url
-            storeAuth.registerUser(credentials)
-            })
-            .catch((error) => {
-            // Handle any errors
-            }),
-        )
-    }
-    else {
-        storeAuth.loginUser(credentials)
-    }
+            const storageReference = storageRef(storage, `images/${file.name}`);
+            const uploadTask = uploadBytesResumable(storageReference, file);
+
+            uploadTask.on("state_changed",
+            (snapshot) => {
+                const progress =
+                Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                setProgresspercent.value = progress;
+            },
+            (error) => {
+                alert(error);
+            },
+            () => {
+                getDownloadURL(storageReference).then((url) => {
+                credentials.state = selectedState.value.nome
+                credentials.img = url
+                storeAuth.registerUser(credentials)
+                }) 
+            })   
+        }
+        else storeAuth.loginUser(credentials)
     }
 }
+
+//* error handling *//
+
+const error = reactive({
+  active: false,
+  errorList: []
+})
+
+
 </script>
 
 <style>
