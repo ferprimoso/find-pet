@@ -1,29 +1,22 @@
-# find-pet
+# Find Pet
 
-This template should help get you started developing with Vue 3 in Vite.
+Find Pet é uma aplicação web focada em divulgação de animais para adoção.
 
-## Recommended IDE Setup
+<p align="center">
+  <img src="https://i.imgur.com/85D2LVj.png" width="400" alt="project pic">
+</p>
+<h2 align="center">
+</h2>
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## Live Preview
 
-## Customize configuration
+[Live Preview](https://main--hilarious-flan-cada7d.netlify.app/) 
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+## Build with
 
-## Project Setup
+Technologies used in the project:
 
-```sh
-npm install
-```
+*   Vue Js
+*   Firebase
+*   Bulma
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
